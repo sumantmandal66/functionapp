@@ -50,6 +50,16 @@ jobs:
             --resource-group ${{ secrets.RESOURCE_GROUP }}
 
 
+      # # Step 3: Install dependencies (if you're using npm/yarn)
+      # - name: Install dependencies
+      #   run: npm install  # This assumes you are using npm for your Azure Function App
+
+      # # Step 4: Zip the function app code into a .zip file for deployment
+      # - name: Zip Function App code
+      #   run: |
+      #     zip -r functionapp.zip ./src/MyFunctionApp  # Replace this with your folder location
+
+
       # # Step 3: Install ZIP utility
       # - name: Install ZIP utility
       #   run: sudo apt-get install zip
