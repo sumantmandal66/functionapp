@@ -37,7 +37,7 @@ jobs:
           # Deploy Function App
           az deployment group create \
             --resource-group "komatsu" \
-            --template-file ./bicep/function.bicep \
+            --template-file ./bicep/functionapp.bicep \
             --parameters functionAppName=${{ secrets.FUNCTION_APP_NAME }} \
                        location=${{ secrets.LOCATION }} \
                        storageAccountName=${{ secrets.STORAGE_ACCOUNT_NAME }} \
