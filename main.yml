@@ -1,0 +1,45 @@
+name: Deploy Azure Function App
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    # Step 1: Check out the code
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    # Step 2: Set up Azure CLI
+    - name: Set up Azure CLI
+      uses: azure/setup-azurecli@v1
+
+    # Step 3: Log in to Azure
+    - name: Log in to Azure
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}  # Store your Azure service principal credentials in GitHub Secrets
+
+    # Step 4: Deploy infrastructure using Bicep
+    - name: Deploy Infrastructure with Bicep
+      run: |
+        az deployment group create \
+          --resource-group ${{ secrets.RESOURCE_GROUP }} \
+          --template-file ./functionApp.bicep \
+          --parameters functionAppName=${{ secrets.FUNCTION_APP_NAME }} \
+                       storageAccountName=${{ secrets.STORAGE_ACCOUNT_NAME }} \
+                       appServicePlanName=${{ secrets.APP_SERVICE_PLAN_NAME }} \
+                       location=${{ secrets.LOCATION }}
+
+    # Step 5: Deploy Function code (ZIP or Container) to Function App
+    - name: Deploy Function code
+      run: |
+        # Upload ZIP file containing function code to Function App
+        az functionapp deployment source config-zip \
+          --src ./my-function-code.zip \
+          --name ${{ secrets.FUNCTION_APP_NAME }} \
+          --resource-group ${{ secrets.RESOURCE_GROUP }}
