@@ -21,15 +21,17 @@ jobs:
       with:
         dotnet-version: '8.0'
 
+    - name: Set project path
+      run: echo "PROJECT_PATH=src/FunctionAppHTTPTrigger.csproj" >> $GITHUB_ENV
+
     - name: Restore dependencies
-      run: dotnet restore src/FunctionAppHTTPTrigger.csproj
-      # Update with the correct path to your project file
+      run: dotnet restore ${{ env.PROJECT_PATH }}
 
     - name: Build the application
-      run: dotnet build --configuration Release src/FunctionAppHTTPTrigger.csproj
+      run: dotnet build --configuration Release ${{ env.PROJECT_PATH }}
 
     - name: Publish the application
-      run: dotnet publish --configuration Release --output ./publish
+      run: dotnet publish --configuration Release --output ./publish ${{ env.PROJECT_PATH }}
 
     - name: Zip the published files
       run: |
