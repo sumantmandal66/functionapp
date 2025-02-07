@@ -49,13 +49,13 @@ jobs:
     needs: build
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
 
     - name: Set up Azure CLI
-      uses: azure/setup-azurecli@v1
+      uses: azure/setup-azurecli@v4
 
     - name: Log in to Azure
-      uses: azure/login@v1
+      uses: azure/login@v4
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
 
@@ -71,7 +71,7 @@ jobs:
           --location ${{ secrets.AZURE_LOCATION }}
 
     - name: Download artifact
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       with:
         name: function-app-artifact
         path: ./artifact
