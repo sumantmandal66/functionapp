@@ -26,7 +26,7 @@ jobs:
       # Update with the correct path to your project file
 
     - name: Build the application
-      run: dotnet build --configuration Release
+      run: dotnet build --configuration Release src/FunctionAppHTTPTrigger.csproj
 
     - name: Publish the application
       run: dotnet publish --configuration Release --output ./publish
