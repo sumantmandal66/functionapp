@@ -1,9 +1,26 @@
 param functionAppName string
-param resourceGroupName string
 param location string
-param storageAccountId string
-param appServicePlanId string
-param applicationInsightsId string
+param storageAccountName string
+param appServicePlanName string
+param applicationInsightsName string
+
+// Fetch the resource ID for the Storage Account dynamically
+resource storageAccount 'Microsoft.Storage/storageAccounts@2021-04-01' existing = {
+  name: storageAccountName
+  scope: resourceGroup()
+}
+
+// Fetch the resource ID for the App Service Plan dynamically
+resource appServicePlan 'Microsoft.Web/serverfarms@2021-02-01' existing = {
+  name: appServicePlanName
+  scope: resourceGroup()
+}
+
+// Fetch the resource ID for Application Insights dynamically
+resource applicationInsights 'Microsoft.Insights/components@2020-02-02' existing = {
+  name: applicationInsightsName
+  scope: resourceGroup()
+}
 
 // Function App resource
 resource functionApp 'Microsoft.Web/sites@2022-03-01' = {
@@ -11,7 +28,7 @@ resource functionApp 'Microsoft.Web/sites@2022-03-01' = {
   location: location
   kind: 'functionapp'
   properties: {
-    serverFarmId: appServicePlanId
+    serverFarmId: appServicePlan.id
     siteConfig: {
       appSettings: [
         {
@@ -20,22 +37,22 @@ resource functionApp 'Microsoft.Web/sites@2022-03-01' = {
         }
         {
           name: 'FUNCTIONS_WORKER_RUNTIME'
-          value: 'node' // You can change this to 'dotnet', 'python', etc.
+          value: 'node' // Change this to 'dotnet', 'python', etc.
         }
         {
           name: 'AzureWebJobsStorage'
-          value: storageAccountId
+          value: storageAccount.id
         }
         {
           name: 'APPINSIGHTS_INSTRUMENTATIONKEY'
-          value: applicationInsightsId
+          value: applicationInsights.properties.InstrumentationKey
         }
       ]
     }
   }
 }
 
-// Diagnostic Settings
+// Diagnostic Settings for Function App
 resource diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-01' = {
   name: '${functionAppName}-diagnostics'
   scope: functionApp
