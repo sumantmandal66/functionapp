@@ -75,7 +75,7 @@ jobs:
     - name: Deploy Azure infrastructure with Bicep
       run: |
         az deployment group create \
-          --resource-group "komatsu-poc" \
+          --resource-group "DefaultResourceGroup-NEU" \
           --template-file bicep/modules/Function_APP.bicep \
           --parameters \
             functionAppName="komatsu-func-app" \
