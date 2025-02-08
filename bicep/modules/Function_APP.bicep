@@ -21,7 +21,7 @@ param appInsightsLocation string
   'dotnet'
   'java'
 ])
-param runtime string = 'node'
+param runtime string = 'dotnet'
 
 var functionAppName = appName
 var hostingPlanName = appName
