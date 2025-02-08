@@ -13,7 +13,7 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2021-04-01' existing 
 // Create a new App Service Plan in the Consumption plan (Dynamic Tier)
 resource appServicePlan 'Microsoft.Web/serverfarms@2021-02-01' = {
   name: appServicePlanName // You can use a dynamic name or pass one as a parameter
-  scope: resourceGroup()
+  location: location
   sku: {
     name: 'Y1' // Consumption Plan SKU (Dynamic)
     tier: 'Dynamic' // Tier for Consumption plan
