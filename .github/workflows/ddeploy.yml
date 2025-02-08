@@ -75,10 +75,10 @@ jobs:
     - name: Deploy Azure infrastructure with Bicep
       run: |
         az deployment group create \
-          --resource-group ${{ secrets.AZURE_RESOURCE_GROUP }} \
+          --resource-group "komatsu-poc" \
           --template-file ./main.bicep \
-          --parameters functionAppName=${{ secrets.FUNCTION_APP_NAME }} \
-          --location ${{ secrets.AZURE_LOCATION }}
+          --parameters functionAppName="komatsu-func-app" \
+          --location "East US"
 
     - name: Download artifact
       uses: actions/download-artifact@v4
@@ -93,6 +93,6 @@ jobs:
     - name: Deploy Function App to Azure
       run: |
         az webapp deploy \
-          --name ${{ secrets.FUNCTION_APP_NAME }} \
-          --resource-group ${{ secrets.AZURE_RESOURCE_GROUP }} \
+          --name "komatsu-func-app" \
+          --resource-group "komatsu-poc" \
           --src-path ./artifact
