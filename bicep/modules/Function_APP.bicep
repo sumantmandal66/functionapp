@@ -59,7 +59,7 @@ resource functionApp 'Microsoft.Web/sites@2022-03-01' = {
 }
 
 // Diagnostic Settings for Function App
-resource diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-01' = {
+resource diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = {
   name: '${functionAppName}-diagnostics'
   scope: functionApp
   properties: {
