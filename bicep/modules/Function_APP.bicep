@@ -72,14 +72,6 @@ resource diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-01-pr
           enabled: true
         }
       }
-      {
-        category: 'ApplicationInsights'
-        enabled: true
-        retentionPolicy: {
-          days: 30
-          enabled: true
-        }
-      }
     ]
     metrics: [
       {
