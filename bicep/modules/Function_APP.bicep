@@ -14,7 +14,13 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2021-04-01' existing 
 resource appServicePlan 'Microsoft.Web/serverfarms@2021-02-01' existing = {
   name: appServicePlanName
   scope: resourceGroup()
+  sku: {
+    name: 'Y1'  // Consumption Plan SKU
+    tier: 'Dynamic'  // This is the consumption tier
+  }
+  kind: 'functionapp'
 }
+
 
 // Fetch the resource ID for Application Insights dynamically
 resource applicationInsights 'Microsoft.Insights/components@2020-02-02' existing = {
