@@ -78,7 +78,7 @@ jobs:
           --resource-group "komatsu-poc" \
           --template-file ./main.bicep \
           --parameters functionAppName="komatsu-func-app" \
-          --location "East US"
+          --location "EastUS"
 
     - name: Download artifact
       uses: actions/download-artifact@v4
