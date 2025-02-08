@@ -1,113 +1,82 @@
-@description('The name of the function app that you wish to create.')
-param appName string = 'fnapp${uniqueString(resourceGroup().id)}'
+param functionAppName string
+param resourceGroupName string
+param location string
+param storageAccountId string
+param appServicePlanId string
+param applicationInsightsId string
 
-@description('Storage Account type')
-@allowed([
-  'Standard_LRS'
-  'Standard_GRS'
-  'Standard_RAGRS'
-])
-param storageAccountType string = 'Standard_LRS'
-
-@description('Location for all resources.')
-param location string = resourceGroup().location
-
-@description('Location for Application Insights')
-param appInsightsLocation string
-
-@description('The language worker runtime to load in the function app.')
-@allowed([
-  'node'
-  'dotnet'
-  'java'
-])
-param runtime string = 'dotnet'
-
-var functionAppName = appName
-var hostingPlanName = appName
-var applicationInsightsName = appName
-var storageAccountName = '${uniqueString(resourceGroup().id)}azfunctions'
-var functionWorkerRuntime = runtime
-
-resource storageAccount 'Microsoft.Storage/storageAccounts@2022-05-01' = {
-  name: storageAccountName
-  location: location
-  sku: {
-    name: storageAccountType
-  }
-  kind: 'Storage'
-  properties: {
-    supportsHttpsTrafficOnly: true
-    defaultToOAuthAuthentication: true
-  }
-}
-
-resource hostingPlan 'Microsoft.Web/serverfarms@2021-03-01' = {
-  name: hostingPlanName
-  location: location
-  sku: {
-    name: 'Y1'
-    tier: 'Dynamic'
-  }
-  properties: {}
-}
-
-resource functionApp 'Microsoft.Web/sites@2021-03-01' = {
+// Function App resource
+resource functionApp 'Microsoft.Web/sites@2022-03-01' = {
   name: functionAppName
   location: location
   kind: 'functionapp'
-  identity: {
-    type: 'SystemAssigned'
-  }
   properties: {
-    serverFarmId: hostingPlan.id
+    serverFarmId: appServicePlanId
     siteConfig: {
       appSettings: [
         {
-          name: 'AzureWebJobsStorage'
-          value: 'DefaultEndpointsProtocol=https;AccountName=${storageAccountName};EndpointSuffix=${environment().suffixes.storage};AccountKey=${storageAccount.listKeys().keys[0].value}'
-        }
-        {
-          name: 'WEBSITE_CONTENTAZUREFILECONNECTIONSTRING'
-          value: 'DefaultEndpointsProtocol=https;AccountName=${storageAccountName};EndpointSuffix=${environment().suffixes.storage};AccountKey=${storageAccount.listKeys().keys[0].value}'
-        }
-        {
-          name: 'WEBSITE_CONTENTSHARE'
-          value: toLower(functionAppName)
-        }
-        {
           name: 'FUNCTIONS_EXTENSION_VERSION'
-          value: '~4'
-        }
-        {
-          name: 'WEBSITE_NODE_DEFAULT_VERSION'
-          value: '~14'
-        }
-        {
-          name: 'APPINSIGHTS_INSTRUMENTATIONKEY'
-          value: applicationInsights.properties.InstrumentationKey
+          value: '~4' // Use the version that suits your requirements
         }
         {
           name: 'FUNCTIONS_WORKER_RUNTIME'
-          value: functionWorkerRuntime
+          value: 'node' // You can change this to 'dotnet', 'python', etc.
+        }
+        {
+          name: 'AzureWebJobsStorage'
+          value: storageAccountId
+        }
+        {
+          name: 'APPINSIGHTS_INSTRUMENTATIONKEY'
+          value: applicationInsightsId
         }
       ]
-      ftpsState: 'FtpsOnly'
-      minTlsVersion: '1.2'
     }
-    httpsOnly: true
   }
 }
 
-resource applicationInsights 'Microsoft.Insights/components@2020-02-02' = {
-  name: applicationInsightsName
-  location: appInsightsLocation
-  kind: 'web'
+// Diagnostic Settings
+resource diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-01' = {
+  name: '${functionAppName}-diagnostics'
+  scope: functionApp
   properties: {
-    Application_Type: 'web'
-    Request_Source: 'rest'
+    logs: [
+      {
+        category: 'FunctionAppLogs'
+        enabled: true
+        retentionPolicy: {
+          days: 30
+          enabled: true
+        }
+      }
+      {
+        category: 'ApplicationInsights'
+        enabled: true
+        retentionPolicy: {
+          days: 30
+          enabled: true
+        }
+      }
+    ]
+    metrics: [
+      {
+        category: 'AllMetrics'
+        enabled: true
+        retentionPolicy: {
+          days: 30
+          enabled: true
+        }
+      }
+    ]
+    destination: [
+      {
+        azureMonitor: {}
+      }
+      {
+        eventHub: {} // Optional: You can add EventHub, LogAnalytics, etc. as destinations
+      }
+    ]
   }
 }
 
 output functionAppUrl string = functionApp.properties.defaultHostName
-output appInsightsInstrumentationKey string = applicationInsights.properties.InstrumentationKey
