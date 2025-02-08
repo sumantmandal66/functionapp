@@ -76,7 +76,7 @@ jobs:
       run: |
         az deployment group create \
           --resource-group "komatsu-poc" \
-          --template-file ../../bicep/modules/Function_APP.bicep \
+          --template-file bicep/modules/Function_APP.bicep \
           --parameters functionAppName="komatsu-func-app"
 
     - name: Download artifact
