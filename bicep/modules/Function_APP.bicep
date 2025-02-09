@@ -7,13 +7,16 @@ param applicationInsightsName string
 param allowedOrigins array // Array parameter to pass the allowed origins for CORS
 
 // Fetch the resource ID for the Storage Account dynamically
-resource storageAccount 'Microsoft.Storage/storageAccounts@2021-04-01' existing = {
+resource storageAccount 'Microsoft.Storage/storageAccounts@2021-02-01' existing = {
   name: storageAccountName
   scope: resourceGroup()
 }
 
-// Fetch the storage account keys dynamically using the listKeys function
-var storageAccountKey string = listKeys(storageAccount.id, '2021-04-01').keys[0].value
+// Fetch the Storage Account Keys
+var storageAccountKey = listKeys(existingStorageAccount.id, existingStorageAccount.apiVersion).keys[0].value
+
+// Construct the Connection String
+var storageConnectionString = 'DefaultEndpointsProtocol=https;AccountName=${existingStorageAccount.name};AccountKey=${storageAccountKey};EndpointSuffix=${environment().suffixes.storage}'
 
 // Create a new App Service Plan in the Consumption plan (Dynamic Tier)
 resource appServicePlan 'Microsoft.Web/serverfarms@2021-02-01' = {
@@ -55,7 +58,7 @@ resource functionApp 'Microsoft.Web/sites@2022-03-01' = {
         }
         {
           name: 'AzureWebJobsStorage'
-          value: 'DefaultEndpointsProtocol=https;AccountName=${storageAccountName};AccountKey=${storageAccountKey};EndpointSuffix=core.windows.net'
+          value: storageConnectionString
         }
         {
           name: 'APPINSIGHTS_INSTRUMENTATIONKEY'
