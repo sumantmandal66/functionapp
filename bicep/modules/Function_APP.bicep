@@ -43,7 +43,11 @@ resource functionApp 'Microsoft.Web/sites@2022-03-01' = {
         }
         {
           name: 'FUNCTIONS_WORKER_RUNTIME'
-          value: 'node' // Change this to 'dotnet', 'python', etc.
+          value: 'dotnet' // Change this to 'dotnet', 'python', etc.
+        }
+        {
+          name: 'FUNCTIONS_WORKER_RUNTIME_VERSION'
+          value: '8.0' // Specify the .NET version (This may need to be updated once .NET 8 is officially supported)
         }
         {
           name: 'AzureWebJobsStorage'
