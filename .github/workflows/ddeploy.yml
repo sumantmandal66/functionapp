@@ -83,7 +83,7 @@ jobs:
             storageAccountName="demoteststgacc" \
             appServicePlanName="appservicekomatsu" \
             applicationInsightsName="appinsightskomastufuncapp" \
-            logAnalyticsWorkspaceName="law-komatsu-dev"
+            // logAnalyticsWorkspaceName="law-komatsu-dev"
 
     - name: Download artifact
       uses: actions/download-artifact@v4
