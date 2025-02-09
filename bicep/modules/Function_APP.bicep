@@ -4,12 +4,16 @@ param storageAccountName string
 param appServicePlanName string
 param applicationInsightsName string
 //param logAnalyticsWorkspaceName string // Add Log Analytics Workspace as a parameter
+param allowedOrigins array // Array parameter to pass the allowed origins for CORS
 
 // Fetch the resource ID for the Storage Account dynamically
 resource storageAccount 'Microsoft.Storage/storageAccounts@2021-04-01' existing = {
   name: storageAccountName
   scope: resourceGroup()
 }
+
+// Fetch the keys for the Storage Account
+output storageAccountKey string = listKeys(storageAccount.id, '2021-04-01').keys[0].value
 
 // Create a new App Service Plan in the Consumption plan (Dynamic Tier)
 resource appServicePlan 'Microsoft.Web/serverfarms@2021-02-01' = {
@@ -51,14 +55,18 @@ resource functionApp 'Microsoft.Web/sites@2022-03-01' = {
         }
         {
           name: 'AzureWebJobsStorage'
-          value: storageAccount.id
-         //value: storageAccount.properties.primaryEndpoints.blob // Using the Storage Account endpoint
+          value: 'DefaultEndpointsProtocol=https;AccountName=' + storageAccountName + ';AccountKey=' + storageAccountKey + ';EndpointSuffix=core.windows.net'
         }
         {
           name: 'APPINSIGHTS_INSTRUMENTATIONKEY'
           value: applicationInsights.properties.InstrumentationKey
         }
       ]
+      cors: {
+        allowedOrigins: union(allowedOrigins, ['https://portal.azure.com']) // Add portal.azure.com to the allowed origins dynamically
+        maxAgeInSeconds: 3600 // Optional: Set the max age for pre-flight requests
+        supportCredentials: true // Optional: Allow sending cookies and credentials
+      }
     }
   }
 }
