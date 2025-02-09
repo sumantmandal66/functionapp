@@ -3,7 +3,7 @@ param location string
 param storageAccountName string
 param appServicePlanName string
 param applicationInsightsName string
-param logAnalyticsWorkspaceName string // Add Log Analytics Workspace as a parameter
+//param logAnalyticsWorkspaceName string // Add Log Analytics Workspace as a parameter
 
 // Fetch the resource ID for the Storage Account dynamically
 resource storageAccount 'Microsoft.Storage/storageAccounts@2021-04-01' existing = {
@@ -60,7 +60,7 @@ resource functionApp 'Microsoft.Web/sites@2022-03-01' = {
 }
 
 // Diagnostic Settings for Function App
-resource diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = {
+/*resource diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = {
   name: '${functionAppName}-diagnostics'
   scope: functionApp
   properties: {
@@ -92,6 +92,6 @@ resource diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-01-pr
       }
     ]
   }
-}
+}*/
 
 output functionAppUrl string = functionApp.properties.defaultHostName
