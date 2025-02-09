@@ -3,6 +3,7 @@ param location string
 param storageAccountName string
 param appServicePlanName string
 param applicationInsightsName string
+param logAnalyticsWorkspaceName string // Add Log Analytics Workspace as a parameter
 
 // Fetch the resource ID for the Storage Account dynamically
 resource storageAccount 'Microsoft.Storage/storageAccounts@2021-04-01' existing = {
@@ -20,7 +21,6 @@ resource appServicePlan 'Microsoft.Web/serverfarms@2021-02-01' = {
   }
   kind: 'functionapp' // This ensures the plan is for function apps
 }
-
 
 // Fetch the resource ID for Application Insights dynamically
 resource applicationInsights 'Microsoft.Insights/components@2020-02-02' existing = {
@@ -48,6 +48,7 @@ resource functionApp 'Microsoft.Web/sites@2022-03-01' = {
         {
           name: 'AzureWebJobsStorage'
           value: storageAccount.id
+         #value: storageAccount.properties.primaryEndpoints.blob // Using the Storage Account endpoint
         }
         {
           name: 'APPINSIGHTS_INSTRUMENTATIONKEY'
@@ -83,12 +84,11 @@ resource diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-01-pr
         }
       }
     ]
-    destination: [
+    destinations: [
       {
-        azureMonitor: {}
-      }
-      {
-        eventHub: {} // Optional: You can add EventHub, LogAnalytics, etc. as destinations
+        logAnalytics: {
+          workspaceId: logAnalyticsWorkspaceName // Providing the Log Analytics Workspace
+        }
       }
     ]
   }
