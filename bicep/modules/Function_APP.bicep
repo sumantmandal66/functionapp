@@ -55,7 +55,7 @@ resource functionApp 'Microsoft.Web/sites@2022-03-01' = {
         }
         {
           name: 'AzureWebJobsStorage'
-          value: 'DefaultEndpointsProtocol=https;AccountName=' + storageAccountName + ';AccountKey=' + storageAccountKey + ';EndpointSuffix=core.windows.net'
+          value: 'DefaultEndpointsProtocol=https;AccountName=${storageAccountName};AccountKey=${storageAccountKey};EndpointSuffix=core.windows.net'
         }
         {
           name: 'APPINSIGHTS_INSTRUMENTATIONKEY'
