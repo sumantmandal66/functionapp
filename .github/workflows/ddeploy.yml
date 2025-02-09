@@ -82,7 +82,8 @@ jobs:
             location="North Europe" \
             storageAccountName="demoteststgacc" \
             appServicePlanName="appservicekomatsu" \
-            applicationInsightsName="appinsightskomastufuncapp"
+            applicationInsightsName="appinsightskomastufuncapp" \
+            logAnalyticsWorkspaceName="law-komatsu-dev"
 
     - name: Download artifact
       uses: actions/download-artifact@v4
@@ -98,5 +99,5 @@ jobs:
       run: |
         az webapp deploy \
           --name "komatsu-func-app" \
-          --resource-group "komatsu-poc" \
+          --resource-group "DefaultResourceGroup-NEU" \
           --src-path ./artifact
