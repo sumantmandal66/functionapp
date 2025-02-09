@@ -12,14 +12,8 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2021-04-01' existing 
   scope: resourceGroup()
 }
 
-// Fetch the storage account key dynamically
-resource storageAccountKeys 'Microsoft.Storage/storageAccounts/listKeys@2021-04-01' = {
-  name: '${storageAccountName}/listkeys'
-  scope: resourceGroup()
-}
-
-// Fetch the storage account key output
-output storageAccountKey string = storageAccountKeys.keys[0].value
+// Fetch the storage account keys dynamically using the listKeys function
+output storageAccountKey string = listKeys(storageAccount.id, '2021-04-01').keys[0].value
 
 // Create a new App Service Plan in the Consumption plan (Dynamic Tier)
 resource appServicePlan 'Microsoft.Web/serverfarms@2021-02-01' = {
