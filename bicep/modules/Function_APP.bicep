@@ -48,7 +48,7 @@ resource functionApp 'Microsoft.Web/sites@2022-03-01' = {
         {
           name: 'AzureWebJobsStorage'
           value: storageAccount.id
-         #value: storageAccount.properties.primaryEndpoints.blob // Using the Storage Account endpoint
+         //value: storageAccount.properties.primaryEndpoints.blob // Using the Storage Account endpoint
         }
         {
           name: 'APPINSIGHTS_INSTRUMENTATIONKEY'
