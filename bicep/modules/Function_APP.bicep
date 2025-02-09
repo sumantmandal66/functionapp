@@ -13,10 +13,10 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2021-02-01' existing 
 }
 
 // Fetch the Storage Account Keys
-var storageAccountKey = listKeys(existingStorageAccount.id, existingStorageAccount.apiVersion).keys[0].value
+var storageAccountKey = listKeys(storageAccount.id, storageAccount.apiVersion).keys[0].value
 
 // Construct the Connection String
-var storageConnectionString = 'DefaultEndpointsProtocol=https;AccountName=${existingStorageAccount.name};AccountKey=${storageAccountKey};EndpointSuffix=${environment().suffixes.storage}'
+var storageConnectionString = 'DefaultEndpointsProtocol=https;AccountName=${storageAccount.name};AccountKey=${storageAccountKey};EndpointSuffix=${environment().suffixes.storage}'
 
 // Create a new App Service Plan in the Consumption plan (Dynamic Tier)
 resource appServicePlan 'Microsoft.Web/serverfarms@2021-02-01' = {
