@@ -4,7 +4,7 @@ param storageAccountName string
 param appServicePlanName string
 param applicationInsightsName string
 //param logAnalyticsWorkspaceName string // Add Log Analytics Workspace as a parameter
-param allowedOrigins array // Array parameter to pass the allowed origins for CORS
+//param allowedOrigins array // Array parameter to pass the allowed origins for CORS
 
 // Fetch the resource ID for the Storage Account dynamically
 resource storageAccount 'Microsoft.Storage/storageAccounts@2021-02-01' existing = {
