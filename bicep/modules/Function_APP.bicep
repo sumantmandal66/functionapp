@@ -66,9 +66,9 @@ resource functionApp 'Microsoft.Web/sites@2022-03-01' = {
         }
       ]
       cors: {
-        allowedOrigins: union(allowedOrigins, ['https://portal.azure.com']) // Add portal.azure.com to the allowed origins dynamically
-        maxAgeInSeconds: 3600 // Optional: Set the max age for pre-flight requests
-        supportCredentials: true // Optional: Allow sending cookies and credentials
+        allowedOrigins: [
+          'https://portal.azure.com'
+        ] // Add portal.azure.com to the allowed origins dynamically
       }
     }
   }
