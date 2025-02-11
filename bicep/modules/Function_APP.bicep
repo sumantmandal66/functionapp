@@ -19,14 +19,8 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2021-02-01' existing 
  var storageConnectionString = 'DefaultEndpointsProtocol=https;AccountName=${storageAccount.name};AccountKey=${storageAccountKey};EndpointSuffix=${environment().suffixes.storage}'
 
 // Create a new App Service Plan in the Consumption plan (Dynamic Tier)
-resource appServicePlan 'Microsoft.Web/serverfarms@2021-02-01' = {
+resource appServicePlan 'Microsoft.Web/serverfarms@2021-02-01' existing = {
   name: appServicePlanName // You can use a dynamic name or pass one as a parameter
-  location: location
-  sku: {
-    name: 'Y1' // Consumption Plan SKU (Dynamic)
-    tier: 'Dynamic' // Tier for Consumption plan
-  }
-  kind: 'functionapp' // This ensures the plan is for function apps
 }
 
 // Fetch the resource ID for Application Insights dynamically
@@ -132,6 +126,7 @@ resource functionApp 'Microsoft.Web/sites@2022-03-01' = {
         }
       }
     ]
+    workspaceId: logAnalyticsWorkspace.id // Reference the existing Log Analytics Workspace ID
   }
 }
 
