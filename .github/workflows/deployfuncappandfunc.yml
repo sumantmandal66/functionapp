@@ -123,4 +123,4 @@ jobs:
         az functionapp deployment source config-zip \
           --name "komatsu-func-app" \
           --resource-group "DefaultResourceGroup-NEU" \
-          --src functionapp.zip
+          --src-path ./artifact/functionapp.zip
