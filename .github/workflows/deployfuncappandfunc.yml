@@ -118,18 +118,18 @@ jobs:
     #   run: |
     #    unzip ./artifact/functionapp.zip -d ./artifact
 
-    - name: Deploy Function to Azure
-      run: |
-        az webapp deploy \
-          --name "komatsu-func-app" \
-          --resource-group "DefaultResourceGroup-NEU" \
-          --src-path ./publish/functionapp.zip
+    #- name: Deploy Function to Azure
+     # run: |
+      #  az webapp deploy \
+       #   --name "komatsu-func-app" \
+        #  --resource-group "DefaultResourceGroup-NEU" \
+         # --src-path ./publish/functionapp.zip
 
-    # - name: Deploy Function App to Azure using Zip
-    #   run: |
-    #     az functionapp deployment source config-zip \
-    #       --name "komatsu-func-app" \
-    #       --resource-group "DefaultResourceGroup-NEU" \
-    #       --src ./artifact/functionapp.zip
+    - name: Deploy Function App to Azure using Zip
+      run: |
+        az functionapp deployment source config-zip \
+         --name "komatsu-func-app" \
+         --resource-group "DefaultResourceGroup-NEU" \
+         --src ./publish/functionapp.zip
 
     #- name: Deploy to Azure Function Appuses: azure/functions-action@v1with:app-name: ${{ secrets.AZURE_FUNCTION_APP_NAME }}package: functionapp.zippublish-type: zip
