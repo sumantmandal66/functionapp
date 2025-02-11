@@ -98,7 +98,7 @@ jobs:
             location="North Europe" \
             storageAccountName="demoteststgacc" \
             appServicePlanName="appservicekomatsu" \
-            applicationInsightsName="appinsightskomastufuncapp" \
+            applicationInsightsName="appinsightskomastufuncapp"
             //logAnalyticsWorkspaceName=<your-log-analytics-workspace-name> 
 
     # - name: Download artifact
