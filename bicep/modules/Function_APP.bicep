@@ -3,7 +3,7 @@ param location string
 param storageAccountName string
 param appServicePlanName string
 param applicationInsightsName string
-//param logAnalyticsWorkspaceName string // Add Log Analytics Workspace as a parameter
+param logAnalyticsWorkspaceName string // Name of the existing Log Analytics Workspace
 //param allowedOrigins array // Array parameter to pass the allowed origins for CORS
 
 // Fetch the resource ID for the Storage Account dynamically
@@ -32,6 +32,12 @@ resource appServicePlan 'Microsoft.Web/serverfarms@2021-02-01' = {
 // Fetch the resource ID for Application Insights dynamically
 resource applicationInsights 'Microsoft.Insights/components@2020-02-02' existing = {
   name: applicationInsightsName
+  scope: resourceGroup()
+}
+
+// Fetch the resource ID of the existing Log Analytics Workspace dynamically
+resource logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2020-08-01' existing = {
+  name: logAnalyticsWorkspaceName
   scope: resourceGroup()
 }
 
@@ -122,7 +128,7 @@ resource functionApp 'Microsoft.Web/sites@2022-03-01' = {
     destinations: [
       {
         logAnalytics: {
-          workspaceId: logAnalyticsWorkspaceName // Providing the Log Analytics Workspace
+          workspaceId: logAnalyticsWorkspace.id // Reference the existing Log Analytics Workspace ID
         }
       }
     ]
