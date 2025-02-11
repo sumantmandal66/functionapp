@@ -29,10 +29,10 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v3
 
-    - name: Set up .NET 8.0 SDK
+    - name: Set up .NET 8.x SDK
       uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: '8.0'
+        dotnet-version: '8.x'
 
     - name: Set project path
       run: echo "PROJECT_PATH=src/FunctionAppHTTP.csproj" >> $GITHUB_ENV
@@ -44,18 +44,17 @@ jobs:
       run: dotnet build --configuration Release ${{ env.PROJECT_PATH }}
 
     - name: Publish the application
-      run: dotnet publish --configuration Release --output ./publish ${{ env.PROJECT_PATH }}
+      run: dotnet publish --configuration Release --output ./publish ${{ env.PROJECT_PATH }} --self-contained false
 
     - name: Zip the published files
       run: |
-        cd ./publish
-        zip -r ../functionapp.zip .
+        zip -r ../functionapp.zip ./publish
     
-    - name: Publish artifact
-      uses: actions/upload-artifact@v4
-      with:
-        name: function-app-artifact
-        path: ./functionapp.zip
+    #- name: Publish artifact
+     # uses: actions/upload-artifact@v4
+      #with:
+       # name: function-app-artifact
+        #path: ./functionapp.zip
 
     # - name: Zip the published files
     #   run: |
@@ -132,3 +131,5 @@ jobs:
     #       --name "komatsu-func-app" \
     #       --resource-group "DefaultResourceGroup-NEU" \
     #       --src ./artifact/functionapp.zip
+
+    #- name: Deploy to Azure Function Appuses: azure/functions-action@v1with:app-name: ${{ secrets.AZURE_FUNCTION_APP_NAME }}package: functionapp.zippublish-type: zip
