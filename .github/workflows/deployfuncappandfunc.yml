@@ -130,6 +130,6 @@ jobs:
         az functionapp deployment source config-zip \
          --name "komatsu-func-app" \
          --resource-group "DefaultResourceGroup-NEU" \
-         --src ./publish/functionapp.zip
+         --src ./functionapp.zip
 
     #- name: Deploy to Azure Function Appuses: azure/functions-action@v1with:app-name: ${{ secrets.AZURE_FUNCTION_APP_NAME }}package: functionapp.zippublish-type: zip
