@@ -35,7 +35,7 @@ jobs:
         dotnet-version: '8.0'
 
     - name: Set project path
-      run: echo "PROJECT_PATH=src/FunctionAppHTTPTrigger.csproj" >> $GITHUB_ENV
+      run: echo "PROJECT_PATH=src/FunctionAppHTTP.csproj" >> $GITHUB_ENV
 
     - name: Restore dependencies
       run: dotnet restore ${{ env.PROJECT_PATH }}
