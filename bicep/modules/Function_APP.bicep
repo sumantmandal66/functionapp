@@ -119,13 +119,13 @@ resource functionApp 'Microsoft.Web/sites@2022-03-01' = {
         }
       }
     ]
-    destinations: [
-      {
-        logAnalytics: {
-          workspaceId: logAnalyticsWorkspace.id // Reference the existing Log Analytics Workspace ID
-        }
-      }
-    ]
+   // destinations: [
+     // {
+        //logAnalytics: {
+         // workspaceId: logAnalyticsWorkspace.id // Reference the existing Log Analytics Workspace ID
+       // }
+     // }
+    //]
     workspaceId: logAnalyticsWorkspace.id // Reference the existing Log Analytics Workspace ID
   }
 }
