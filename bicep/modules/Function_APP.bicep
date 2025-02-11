@@ -50,7 +50,7 @@ resource functionApp 'Microsoft.Web/sites@2022-03-01' = {
         }
         {
           name: 'FUNCTIONS_WORKER_RUNTIME'
-          value: 'dotnet' // Change this to 'dotnet', 'python', etc.
+          value: 'dotnet-isolated' // Change this to 'dotnet', 'python', etc.
         }
         {
           name: 'FUNCTIONS_WORKER_RUNTIME_VERSION'
