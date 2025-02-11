@@ -49,7 +49,14 @@ jobs:
     - name: Zip the published files
       run: |
         zip -r functionapp.zip ./publish
-    
+
+    # Upload the functionapp.zip as an artifact for use in the deploy job
+    - name: Upload functionapp.zip artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: functionapp-zip
+        path: ./functionapp.zip
+
     #- name: Publish artifact
      # uses: actions/upload-artifact@v4
       #with:
@@ -73,6 +80,12 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
+
+    - name: Download functionapp.zip artifact
+      uses: actions/download-artifact@v4
+      with:
+      name: functionapp-zip
+      path: ./artifact
 
     - name: Set up Azure CLI
       uses: azure/cli@v1
@@ -132,9 +145,9 @@ jobs:
         # --resource-group "DefaultResourceGroup-NEU" \
          #--src ./functionapp.zip
 
-    - name: Deploy to Azure Function App
+    - name: Deploy to Azure Function
       uses: azure/functions-action@v1
       with:
         app-name: "komatsu-func-app"
-        package: functionapp.zip
+        package: ./artifact/functionapp.zip
         publish-type: zip
