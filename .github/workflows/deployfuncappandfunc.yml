@@ -1,12 +1,13 @@
-name: Deploy Azure Function App
+name: Deploy .NET 8.0 Isolated Function App
 
 on:
   push:
     branches:
       - main
-  pull_request:
-    branches:
-      - main
+  # pull_request:
+  #   branches:
+  #     - main
+
  #on:
   #workflow_dispatch:
     #inputs:
@@ -28,7 +29,7 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v3
 
-    - name: Set up .NET 8.0
+    - name: Set up .NET 8.0 SDK
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: '8.0'
@@ -39,22 +40,25 @@ jobs:
     - name: Restore dependencies
       run: dotnet restore ${{ env.PROJECT_PATH }}
 
-    - name: Build the application
+    - name: Build the Function App
       run: dotnet build --configuration Release ${{ env.PROJECT_PATH }}
 
-    - name: Publish the application
+    - name: Publish the Function App
       run: dotnet publish --configuration Release --output ./publish ${{ env.PROJECT_PATH }}
 
-    - name: Zip the published files
-      run: |
-        cd ./publish
-        zip -r ../functionapp.zip .
+    - name: Create Zip file
+      run: zip -r functionapp.zip ./publish
+
+    # - name: Zip the published files
+    #   run: |
+    #     cd ./publish
+    #     zip -r ../functionapp.zip .
     
-    - name: Publish artifact
-      uses: actions/upload-artifact@v4
-      with:
-        name: function-app-artifact
-        path: ./functionapp.zip
+    # - name: Publish artifact
+    #  uses: actions/upload-artifact@v4
+    #   with:
+    #     name: function-app-artifact
+    #     path: ./functionapp.zip
 
   deploy:
     runs-on: ubuntu-latest
@@ -95,20 +99,28 @@ jobs:
             storageAccountName="demoteststgacc" \
             appServicePlanName="appservicekomatsu" \
             applicationInsightsName="appinsightskomastufuncapp" \
+            //logAnalyticsWorkspaceName=<your-log-analytics-workspace-name> 
 
-    - name: Download artifact
-      uses: actions/download-artifact@v4
-      with:
-        name: function-app-artifact
-        path: ./artifact
+    # - name: Download artifact
+    #   uses: actions/download-artifact@v4
+    #   with:
+    #     name: function-app-artifact
+    #     path: ./artifact
 
-    - name: Unzip the artifact
+    # - name: Unzip the artifact
+    #   run: |
+    #    unzip ./artifact/functionapp.zip -d ./artifact
+
+    # - name: Deploy Function App to Azure
+    #   run: |
+    #     az webapp deploy \
+    #       --name "komatsu-func-app" \
+    #       --resource-group "DefaultResourceGroup-NEU" \
+    #       --src-path ./artifact/functionapp.zip
+
+    - name: Deploy Function App to Azure using Zip
       run: |
-        unzip ./artifact/functionapp.zip -d ./artifact
-
-    - name: Deploy Function App to Azure
-      run: |
-        az webapp deploy \
+        az functionapp deployment source config-zip \
           --name "komatsu-func-app" \
           --resource-group "DefaultResourceGroup-NEU" \
-          --src-path ./artifact/functionapp.zip
+          --src functionapp.zip
