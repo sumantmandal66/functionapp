@@ -7,6 +7,18 @@ on:
   pull_request:
     branches:
       - main
+ #on:
+  #workflow_dispatch:
+    #inputs:
+      #environment:
+        #description: 'Choose environment to deploy'
+        #required: true
+        #default: 'Dev'
+        #type: choice
+        #options:
+          #- Dev
+          #- Test
+          #- Stage
 
 jobs:
   build:
