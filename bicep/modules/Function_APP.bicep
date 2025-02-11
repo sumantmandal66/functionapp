@@ -12,11 +12,11 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2021-02-01' existing 
   scope: resourceGroup()
 }
 
-// Fetch the Storage Account Keys
-var storageAccountKey = listKeys(storageAccount.id, storageAccount.apiVersion).keys[0].value
+ //Fetch the Storage Account Keys
+ var storageAccountKey = listKeys(storageAccount.id, storageAccount.apiVersion).keys[0].value
 
 // Construct the Connection String
-var storageConnectionString = 'DefaultEndpointsProtocol=https;AccountName=${storageAccount.name};AccountKey=${storageAccountKey};EndpointSuffix=${environment().suffixes.storage}'
+ var storageConnectionString = 'DefaultEndpointsProtocol=https;AccountName=${storageAccount.name};AccountKey=${storageAccountKey};EndpointSuffix=${environment().suffixes.storage}'
 
 // Create a new App Service Plan in the Consumption plan (Dynamic Tier)
 resource appServicePlan 'Microsoft.Web/serverfarms@2021-02-01' = {
@@ -50,7 +50,7 @@ resource functionApp 'Microsoft.Web/sites@2022-03-01' = {
         }
         {
           name: 'FUNCTIONS_WORKER_RUNTIME'
-          value: 'dotnet' // Change this to 'dotnet', 'python', etc.
+          value: 'dotnet-isolated' // Change this to 'dotnet', 'python', etc.
         }
         {
           name: 'FUNCTIONS_WORKER_RUNTIME_VERSION'
@@ -64,6 +64,26 @@ resource functionApp 'Microsoft.Web/sites@2022-03-01' = {
           name: 'APPINSIGHTS_INSTRUMENTATIONKEY'
           value: applicationInsights.properties.InstrumentationKey
         }
+        {
+          name: 'APPLICATIONINSIGHTS_CONNECTION_STRING'
+          value: 'InstrumentationKey=2a663696-f76b-4628-b694-5d2697016ba3;IngestionEndpoint=https://eastus-8.in.applicationinsights.azure.com/;LiveEndpoint=https://eastus.livediagnostics.monitor.azure.com/;ApplicationId=c6dd3ad0-200f-43fd-93eb-e76b167f4ae5'
+        }
+        {
+          name: 'AzureWebJobs.ServiceBusQueueTrigger1.Disabled'
+          value: '1'
+        }
+        {
+          name: 'WEBSITE_RUN_FROM_PACKAGE'
+          value: '1'
+        }
+        {
+          name: 'WEBSITE_USE_PLACEHOLDER_DOTNETISOLATED'
+          value: '1'
+        }
+        {
+          name: 'WEBSITE_VNET_ROUTE_ALL'
+          value: '1'        
+        }
       ]
       cors: {
         allowedOrigins: [
@@ -75,7 +95,7 @@ resource functionApp 'Microsoft.Web/sites@2022-03-01' = {
 }
 
 // Diagnostic Settings for Function App
-/*resource diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = {
+  resource diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = {
   name: '${functionAppName}-diagnostics'
   scope: functionApp
   properties: {
@@ -107,6 +127,6 @@ resource functionApp 'Microsoft.Web/sites@2022-03-01' = {
       }
     ]
   }
-}*/
+}
 
 output functionAppUrl string = functionApp.properties.defaultHostName
