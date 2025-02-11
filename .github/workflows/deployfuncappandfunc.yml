@@ -84,8 +84,8 @@ jobs:
     - name: Download functionapp.zip artifact
       uses: actions/download-artifact@v4
       with:
-      name: functionapp-zip
-      path: ./artifact
+        name: functionapp-zip
+        path: ./artifact
 
     - name: Set up Azure CLI
       uses: azure/cli@v1
