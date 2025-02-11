@@ -47,7 +47,10 @@ jobs:
       run: dotnet publish --configuration Release --output ./publish ${{ env.PROJECT_PATH }}
 
     - name: Create Zip file
-      run: zip -r functionapp.zip ./publish
+      run: |
+        mkdir -p ./artifact         # Create the directory './artifact' if it doesn't already exist.
+        zip -r ./artifact/functionapp.zip ./publish  # Create a zip file of the published function app located in './publish'
+    
 
     # - name: Zip the published files
     #   run: |
@@ -101,11 +104,11 @@ jobs:
             applicationInsightsName="appinsightskomastufuncapp" \
             logAnalyticsWorkspaceName="law-komatsu-dev"
 
-    # - name: Download artifact
-    #   uses: actions/download-artifact@v4
-    #   with:
-    #     name: function-app-artifact
-    #     path: ./artifact
+    - name: Download artifact
+      uses: actions/download-artifact@v4
+      with:
+        name: function-app-artifact
+        path: ./artifact
 
     # - name: Unzip the artifact
     #   run: |
@@ -124,4 +127,3 @@ jobs:
           --name "komatsu-func-app" \
           --resource-group "DefaultResourceGroup-NEU" \
           --src ./artifact/functionapp.zip
-
