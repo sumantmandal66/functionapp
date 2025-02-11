@@ -40,22 +40,22 @@ jobs:
     - name: Restore dependencies
       run: dotnet restore ${{ env.PROJECT_PATH }}
 
-    - name: Build the Function App
+    - name: Build the application
       run: dotnet build --configuration Release ${{ env.PROJECT_PATH }}
 
-    - name: Publish the Function App
+    - name: Publish the application
       run: dotnet publish --configuration Release --output ./publish ${{ env.PROJECT_PATH }}
 
-    - name: Create Zip file
+    - name: Zip the published files
       run: |
-        mkdir -p ./artifact         # Create the directory './artifact' if it doesn't already exist.
-        zip -r ./artifact/functionapp.zip ./publish  # Create a zip file of the published function app located in './publish'
+        cd ./publish
+        zip -r ../functionapp.zip .
     
-    - name: Upload artifact
+    - name: Publish artifact
       uses: actions/upload-artifact@v4
       with:
         name: function-app-artifact
-        path: ./artifact/functionapp.zip  # Upload the artifact for use in the deploy step
+        path: ./functionapp.zip
 
     # - name: Zip the published files
     #   run: |
@@ -109,26 +109,26 @@ jobs:
             applicationInsightsName="appinsightskomastufuncapp" \
             logAnalyticsWorkspaceName="law-komatsu-dev"
 
-    - name: Download artifact
-      uses: actions/download-artifact@v4
-      with:
-        name: function-app-artifact
-        path: ./artifact
+    # - name: Download artifact
+    #   uses: actions/download-artifact@v4
+    #   with:
+    #     name: function-app-artifact
+    #     path: ./artifact
 
     # - name: Unzip the artifact
     #   run: |
     #    unzip ./artifact/functionapp.zip -d ./artifact
 
-    # - name: Deploy Function App to Azure
-    #   run: |
-    #     az webapp deploy \
-    #       --name "komatsu-func-app" \
-    #       --resource-group "DefaultResourceGroup-NEU" \
-    #       --src-path ./artifact/functionapp.zip
-
-    - name: Deploy Function App to Azure using Zip
+    - name: Deploy Function to Azure
       run: |
-        az functionapp deployment source config-zip \
+        az webapp deploy \
           --name "komatsu-func-app" \
           --resource-group "DefaultResourceGroup-NEU" \
-          --src ./artifact/functionapp.zip
+          --src-path ./artifact/functionapp.zip
+
+    # - name: Deploy Function App to Azure using Zip
+    #   run: |
+    #     az functionapp deployment source config-zip \
+    #       --name "komatsu-func-app" \
+    #       --resource-group "DefaultResourceGroup-NEU" \
+    #       --src ./artifact/functionapp.zip
