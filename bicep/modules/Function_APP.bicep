@@ -103,31 +103,15 @@ resource functionApp 'Microsoft.Web/sites@2022-03-01' = {
       {
         category: 'FunctionAppLogs'
         enabled: true
-        retentionPolicy: {
-          days: 30
-          enabled: true
-        }
       }
     ]
     metrics: [
       {
         category: 'AllMetrics'
         enabled: true
-        retentionPolicy: {
-          days: 30
-          enabled: true
-        }
       }
     ]
-   // destinations: [
-     // {
-        //logAnalytics: {
-         // workspaceId: logAnalyticsWorkspace.id // Reference the existing Log Analytics Workspace ID
-       // }
-     // }
-    //]
-    workspaceId: logAnalyticsWorkspace.id // Reference the existing Log Analytics Workspace ID
+    workspaceId: logAnalyticsWorkspace.id    
   }
 }
-
 output functionAppUrl string = functionApp.properties.defaultHostName
