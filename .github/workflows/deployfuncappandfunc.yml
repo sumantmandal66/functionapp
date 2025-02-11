@@ -48,7 +48,7 @@ jobs:
 
     - name: Zip the published files
       run: |
-        zip -r ../functionapp.zip ./publish
+        zip -r functionapp.zip ./publish
     
     #- name: Publish artifact
      # uses: actions/upload-artifact@v4
@@ -123,7 +123,7 @@ jobs:
         az webapp deploy \
           --name "komatsu-func-app" \
           --resource-group "DefaultResourceGroup-NEU" \
-          --src-path ./artifact/functionapp.zip
+          --src-path ./publish/functionapp.zip
 
     # - name: Deploy Function App to Azure using Zip
     #   run: |
