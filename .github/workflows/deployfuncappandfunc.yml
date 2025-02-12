@@ -157,7 +157,7 @@ jobs:
 
     - name: Deploy to Azure Function
       run: |
-        az functionapp deployment source config.zip \
+        az functionapp deployment source config-zip \
         --name "komatsu-func-app" \
         --resource-group "DefaultResourceGroup-NEU" \
         --src .artifact\functionapp.zip
