@@ -50,9 +50,6 @@ jobs:
       run: |
         mkdir -p artifact
         zip -r artifact/functionapp.zip ./publish
-
-    - name: List artifact directory36        
-      run: ls -la artifact
       
     # Upload the functionapp.zip as an artifact for use in the deploy job
     - name: Upload functionapp.zip artifact
@@ -61,9 +58,6 @@ jobs:
       with:
         name: functionapp-zip
         path: ./artifact/functionapp.zip
-
-    - name: List artifact directory36        
-      run: ls -la functionapp-zip
 
     #- name: Publish artifact
      # uses: actions/upload-artifact@v4
@@ -135,8 +129,8 @@ jobs:
     - name: Download artifact
       uses: actions/download-artifact@v4
       with:
-         name: functionapp-zip
-         path: ./artifact
+         name: functionapp-zip  # The name of the artifact to download
+         path: ./artifact       # The path where the artifact will be stored
 
     - name: Confirm Download Success
       run: |
