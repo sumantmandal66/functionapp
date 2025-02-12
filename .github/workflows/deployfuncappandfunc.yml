@@ -45,21 +45,19 @@ jobs:
 
     - name: Publish the application
       run: dotnet publish --configuration Release --output ./publish ${{ env.PROJECT_PATH }} --self-contained false
-
-    - name: echoing artifact
-      run: echo'$(Build.ArtifactStagingDirectory)'
     
     - name: Zip the published files
       run: |
-        zip -r functionapp.zip ./publish
+        mkdir -p artifact
+        zip -r artifact/functionapp.zip ./publish
 
     # Upload the functionapp.zip as an artifact for use in the deploy job
-    - name: Upload functionapp.zip artifact
-      id : uploadzipartifact
-      uses: actions/upload-artifact@v4
-      with:
-        name: functionapp-zip
-        path: ./functionapp.zip
+    #- name: Upload functionapp.zip artifact
+     # id : uploadzipartifact
+      #uses: actions/upload-artifact@v4
+      #with:
+       # name: functionapp-zip
+        #path: ./functionapp.zip
 
     #- name: Publish artifact
      # uses: actions/upload-artifact@v4
@@ -85,10 +83,10 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v4
 
-    - name: Download functionapp.zip artifact
-      uses: actions/download-artifact@v4
-      with:
-        name: functionapp-zip
+    #- name: Download functionapp.zip artifact
+     # uses: actions/download-artifact@v4
+      #with:
+       # name: functionapp-zip
         #path: ./artifact
 
     - name: Set up Azure CLI
@@ -153,5 +151,6 @@ jobs:
       uses: azure/functions-action@v1
       with:
         app-name: "komatsu-func-app"
-        package: functionapp.zip
+        package: './artifact/functionapp.zip'
         publish-type: zip
+
