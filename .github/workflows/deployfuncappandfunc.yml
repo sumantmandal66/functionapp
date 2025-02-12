@@ -160,5 +160,5 @@ jobs:
       with:
         app-name: "komatsu-func-app"
         package: './artifact/functionapp.zip'
-        publish-type: 'package'
+        publish-type: package
 
