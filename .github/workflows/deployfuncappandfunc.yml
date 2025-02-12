@@ -55,12 +55,15 @@ jobs:
       run: ls -la artifact
       
     # Upload the functionapp.zip as an artifact for use in the deploy job
-    #- name: Upload functionapp.zip artifact
-     # id : uploadzipartifact
-      #uses: actions/upload-artifact@v4
-      #with:
-       # name: functionapp-zip
-        #path: ./functionapp.zip
+    - name: Upload functionapp.zip artifact
+      id : uploadzipartifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: functionapp-zip
+        path: ./functionapp.zip
+
+    - name: List artifact directory36        
+      run: ls -la functionapp-zip
 
     #- name: Publish artifact
      # uses: actions/upload-artifact@v4
@@ -129,11 +132,19 @@ jobs:
             applicationInsightsName="appinsightskomastufuncapp" \
             logAnalyticsWorkspaceName="law-komatsu-dev"
 
-    # - name: Download artifact
-    #   uses: actions/download-artifact@v4
-    #   with:
-    #     name: function-app-artifact
-    #     path: ./artifact
+    - name: Download artifact
+      uses: actions/download-artifact@v4
+      with:
+         name: functionapp-zip
+         path: ./artifact
+
+    - name: Confirm Download Success
+      run: |
+        if [ -f ./artifact/functionapp.zip ]; then
+          echo "Artifact download successful."
+        else
+          echo "Artifact download failed!" && exit 1
+        fi
 
     # - name: Unzip the artifact
     #   run: |
