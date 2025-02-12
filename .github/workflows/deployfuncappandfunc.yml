@@ -49,11 +49,12 @@ jobs:
     - name: Zip the published files
       run: |
         mkdir -p artifact
-        zip -r artifact/functionapp.zip ./publish
+        # Zip only the contents of the publish folder, not the folder itself
+        cd ./publish
+        zip -r ../artifact/functionapp.zip .
       
-    # Upload the functionapp.zip as an artifact for use in the deploy job
     - name: Upload functionapp.zip artifact
-      id : uploadzipartifact
+      id: uploadzipartifact
       uses: actions/upload-artifact@v4
       with:
         name: functionapp-zip
@@ -116,7 +117,7 @@ jobs:
           --resource-group "DefaultResourceGroup-NEU" \
           --template-file bicep/modules/Function_APP.bicep \
           --parameters \
-            functionAppName="komatsu-func-app3" \
+            functionAppName="komatsu-func-app" \
             location="North Europe" \
             storageAccountName="demoteststgacc" \
             appServicePlanName="appservicekomatsu" \
@@ -173,4 +174,3 @@ jobs:
       #   app-name: "komatsu-func-app"
       #   package: './artifact/functionapp.zip'
       #   publish-type: package
-
