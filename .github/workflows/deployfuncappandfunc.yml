@@ -109,9 +109,6 @@ jobs:
 
     - name: Install Bicep
       run: az bicep install
-
-    - name: List artifact directory36        
-      run: ls -la artifact
       
     - name: Deploy Azure infrastructure with Bicep
       run: |
