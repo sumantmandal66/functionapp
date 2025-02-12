@@ -46,6 +46,9 @@ jobs:
     - name: Publish the application
       run: dotnet publish --configuration Release --output ./publish ${{ env.PROJECT_PATH }} --self-contained false
 
+    - name: echoing artifact
+      run: echo'$(Build.ArtifactStagingDirectory)'
+    
     - name: Zip the published files
       run: |
         zip -r functionapp.zip ./publish
