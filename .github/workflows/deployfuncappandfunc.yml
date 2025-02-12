@@ -51,6 +51,9 @@ jobs:
         mkdir -p artifact
         zip -r artifact/functionapp.zip ./publish
 
+    - name: List artifact directory36        
+      run: ls -la artifact
+      
     # Upload the functionapp.zip as an artifact for use in the deploy job
     #- name: Upload functionapp.zip artifact
      # id : uploadzipartifact
@@ -110,6 +113,9 @@ jobs:
     - name: Install Bicep
       run: az bicep install
 
+    - name: List artifact directory36        
+      run: ls -la artifact
+      
     - name: Deploy Azure infrastructure with Bicep
       run: |
         az deployment group create \
