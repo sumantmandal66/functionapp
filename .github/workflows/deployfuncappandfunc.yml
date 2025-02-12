@@ -116,7 +116,7 @@ jobs:
           --resource-group "DefaultResourceGroup-NEU" \
           --template-file bicep/modules/Function_APP.bicep \
           --parameters \
-            functionAppName="komatsu-func-app" \
+            functionAppName="komatsu-func-app1" \
             location="North Europe" \
             storageAccountName="demoteststgacc" \
             appServicePlanName="appservicekomatsu" \
