@@ -92,11 +92,11 @@ resource functionApp 'Microsoft.Web/sites@2022-03-01' = {
         }
         {
           name: 'AWSS3AcessKey'
-          value: "${{ secrets.AWSS3AcessKey }}"
+          value: AWSS3AcessKey
         }
         {
           name: 'AWSS3SecretKey'
-          value: "${{ secrets.AWSS3SecretKey }}"
+          value: AWSS3SecretKey"
         }
       ]
       cors: {
