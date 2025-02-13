@@ -4,22 +4,27 @@ on:
   push:
     branches:
       - main
-  # pull_request:
-  #   branches:
-  #     - main
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Choose environment to deploy'
+        required: true
+        default: 'Dev'
+        type: choice
+        options:
+          - dev
+          - qa
+          - uat
+          - prod
 
- #on:
-  #workflow_dispatch:
-    #inputs:
-      #environment:
-        #description: 'Choose environment to deploy'
-        #required: true
-        #default: 'Dev'
-        #type: choice
-        #options:
-          #- Dev
-          #- Test
-          #- Stage
+env: 
+  resource-group: $(jq -r ".resource-group" ./bicep/parameters/${{ inputs.environment }}Parameters.json)
+  functionAppName: $(jq -r ".functionAppName" ./bicep/parameters/${{ inputs.environment }}Parameters.json)
+  location: $(jq -r ".location" ./bicep/parameters/${{ inputs.environment }}Parameters.json)
+  storageAccountName: $(jq -r ".storageAccountName" ./bicep/parameters/${{ inputs.environment }}Parameters.json)
+  appServicePlanName: $(jq -r ".appServicePlanName" ./bicep/parameters/${{ inputs.environment }}Parameters.json)
+  applicationInsightsName: $(jq -r ".applicationInsightsName" ./bicep/parameters/${{ inputs.environment }}Parameters.json)
+  logAnalyticsWorkspaceName: $(jq -r ".logAnalyticsWorkspaceName" ./bicep/parameters/${{ inputs.environment }}Parameters.json)
 
 jobs:
   build:
@@ -114,15 +119,15 @@ jobs:
     - name: Deploy Azure infrastructure with Bicep
       run: |
         az deployment group create \
-          --resource-group "DefaultResourceGroup-NEU" \
+          --resource-group ${{ env.functionAppName }} \
           --template-file bicep/modules/Function_APP.bicep \
           --parameters \
-            functionAppName="komatsu-func-app" \
-            location="North Europe" \
-            storageAccountName="demoteststgacc" \
-            appServicePlanName="appservicekomatsu" \
-            applicationInsightsName="appinsightskomastufuncapp" \
-            logAnalyticsWorkspaceName="law-komatsu-dev"
+            functionAppName=${{ env.functionAppName }} \
+            location=${{ env.location }} \
+            storageAccountName=${{ env.storageAccountName }} \
+            appServicePlanName=${{ env.appServicePlanName }} \
+            applicationInsightsName=${{ env.applicationInsightsName }} \
+            logAnalyticsWorkspaceName=${{ env.logAnalyticsWorkspaceName }}
 
     - name: Download artifact
       uses: actions/download-artifact@v4
@@ -159,15 +164,15 @@ jobs:
     - name: Deploy to Azure Function
       run: |
         az functionapp deployment source config-zip \
-        --name "komatsu-func-app" \
-        --resource-group "DefaultResourceGroup-NEU" \
+        --name ${{ env.functionAppName }} \
+        --resource-group ${{ env.resourceGroupName }} \
         --src ./artifact/functionapp.zip
 
     - name: Verify Deployment
       run: |
         az functionapp show \
-        --name "komatsu-func-app" \
-        --resource-group "DefaultResourceGroup-NEU" \
+        --name ${{ env.functionAppName }} \
+        --resource-group ${{ env.resourceGroupName }} 
       
       # uses: azure/functions-action@v1
       # with:
