@@ -129,6 +129,8 @@ jobs:
             applicationInsightsName=${{ env.applicationInsightsName }} \
             logAnalyticsWorkspaceName=${{ env.logAnalyticsWorkspaceName }}
             storageConnectionString=${{ env.AZUREWEBJOBSSTORAGE }}
+            AWSS3SecretKey=${{ env.AWSS3ACESSKEY }}
+            AWSS3AcessKey=${{ env.AWSS3SECRETKEY }}
 
     - name: Download artifact
       uses: actions/download-artifact@v4
