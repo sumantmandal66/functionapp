@@ -125,25 +125,12 @@ jobs:
     - name: Deploy Azure infrastructure with Bicep
       run: |
         az deployment group create \
-          --resource-group ${{ env.resourceGroupName }} \
-          --template-file bicep/modules/Function_APP.bicep \
-          --parameters ./bicep/modules/parameters/${{ inputs.environment }}parameter.json
-          --parameters \
-            storageConnectionString=${{ secrets.AZUREWEBJOBSSTORAGE }} \
-            AWSS3SecretKey=${{ secrets.AWSS3ACESSKEY }} \
-            AWSS3AcessKey=${{ secrets.AWSS3SECRETKEY }} \
-            functionAppName=${{ env.functionAppName }} \
-            location=${{ env.location }} \
-            storageAccountName=${{ env.storageAccountName }} \
-            appServicePlanName=${{ env.appServicePlanName }} \
-            applicationInsightsName=${{ env.applicationInsightsName }} \
-            logAnalyticsWorkspaceName=${{ env.logAnalyticsWorkspaceName }} \
-            appInsightsInstrumentationKey=${{ env.appInsightsInstrumentationKey }} \
-            functionsExtensionVersion=${{ env.functionsExtensionVersion }} \
-            functionsWorkerRuntime=${{ env.functionsWorkerRuntime }} \
-            serviceBusQueueTriggerDisabled=${{ env.serviceBusQueueTriggerDisabled }} \
-            websiteRunFromPackage=${{ env.websiteRunFromPackage }} \
-            websiteVnetRouteAll=${{ env.websiteVnetRouteAll }}
+            --resource-group <your-resource-group> \
+            --template-file .bicep/modules/Function_APP.bicep \
+            --parameters ./bicep/modules/parameters/${{ github.event.inputs.environment }}parameter.json \ # Your regular params file
+            --parameters storageConnectionString=${{ secrets.AZURE_STORAGE_CONNECTION_STRING }} \
+            --parameters awsAccessKeyId=${{ secrets.AWS_ACCESS_KEY_ID }} \
+            --parameters awsSecretAccessKey=${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
     - name: Download artifact
       uses: actions/download-artifact@v4
