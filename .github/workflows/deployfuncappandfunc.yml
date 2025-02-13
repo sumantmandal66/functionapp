@@ -127,7 +127,7 @@ jobs:
         az deployment group create \
             --resource-group ${{ env.resourceGroupName }} \
             --template-file ./bicep/modules/Function_APP.bicep \
-            --parameters ./bicep/modules/parameters/${{ github.event.inputs.environment }}parameter.json \ # Your regular params file
+            --parameters ./bicep/modules/parameters/${{ github.event.inputs.environment }}parameter.json \
             --parameters storageConnectionString=${{ secrets.AZURE_STORAGE_CONNECTION_STRING }} \
             --parameters awsAccessKeyId=${{ secrets.AWS_ACCESS_KEY_ID }} \
             --parameters awsSecretAccessKey=${{ secrets.AWS_SECRET_ACCESS_KEY }}
