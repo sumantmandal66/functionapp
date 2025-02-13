@@ -133,6 +133,10 @@ jobs:
             --resource-group ${{ env.resourceGroupName }} \
             --template-file ./bicep/modules/Function_APP.bicep \
             --parameters ./bicep/modules/parameters/${{ github.event.inputs.environment }}parameter.json \
+            --parameters AWSS3AcessKey=${{ secrets.AWSS3AcessKey }} \
+            --parameters AWSS3SecretKey=${{ secrets.AWSS3SECRETKEY }} \
+            --parameters serviceBusQueueTriggerDisabled=${{ env.serviceBusQueueTriggerDisabled }} \
+            --parameters storageConnectionString=${{ secrets.AZUREWEBJOBSSTORAGE }} \
             # --parameters functionAppName="${{ env.functionAppName }}" \
             # --parameters location="${{ env.location }}" \
             # --parameters appServicePlanName=${{ env.appServicePlanName }} \
@@ -144,10 +148,7 @@ jobs:
             # --parameters serviceBusQueueTriggerDisabled=${{ env.serviceBusQueueTriggerDisabled }} \
             # --parameters websiteRunFromPackage=${{ env.websiteRunFromPackage }} \
             # --parameters websiteVnetRouteAll=${{ env.websiteVnetRouteAll }} \
-            # --parameters storageAccountName=${{ env.storageAccountName }} \
-            --parameters storageConnectionString=${{ secrets.AZUREWEBJOBSSTORAGE }} \
-            --parameters AWSS3AcessKey=${{ secrets.AWSS3AcessKey }} \
-            --parameters AWSS3SecretKey=${{ secrets.AWSS3SECRETKEY }} 
+            # --parameters storageAccountName=${{ env.storageAccountName }} \            
 
     - name: Download artifact
       uses: actions/download-artifact@v4
