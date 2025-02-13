@@ -7,7 +7,6 @@ param logAnalyticsWorkspaceName string // Name of the existing Log Analytics Wor
 param appInsightsInstrumentationKey string // New parameter for Application Insights Instrumentation Key
 param functionsExtensionVersion string // New parameter for Functions Extension Version
 param functionsWorkerRuntime string // New parameter for Functions Worker Runtime
-param applicationInsightsConnectionString string // New parameter for Application Insights Connection String
 param serviceBusQueueTriggerDisabled string // New parameter for Service Bus Queue Trigger Disabled
 param websiteRunFromPackage string // New parameter for WEBSITE_RUN_FROM_PACKAGE
 param websiteVnetRouteAll string // New parameter for WEBSITE_VNET_ROUTE_ALL
@@ -68,10 +67,6 @@ resource functionApp 'Microsoft.Web/sites@2022-03-01' = {
         {
           name: 'APPINSIGHTS_INSTRUMENTATIONKEY'
           value: appInsightsInstrumentationKey // Parameterized
-        }
-        {
-          name: 'APPLICATIONINSIGHTS_CONNECTION_STRING'
-          value: applicationInsightsConnectionString // Parameterized
         }
         {
           name: 'AzureWebJobs.ServiceBusQueueTrigger1.Disabled'
