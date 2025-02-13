@@ -32,6 +32,7 @@ env:
   websiteRunFromPackage :  $(jq -r ".websiteRunFromPackage" ./bicep/modules/parameters/${{ github.event.inputs.environment }}parameter.json)
   websiteVnetRouteAll :  $(jq -r ".websiteVnetRouteAll" ./bicep/modules/parameters/${{ github.event.inputs.environment }}parameter.json)
   
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -50,6 +51,9 @@ jobs:
 
     - name: Restore dependencies
       run: dotnet restore ${{ env.PROJECT_PATH }}
+
+    - name: abc
+      run: echo "$ {{ env.functionAppName }}"
 
     - name: Build the application
       run: dotnet build --configuration Release ${{ env.PROJECT_PATH }}
@@ -70,6 +74,7 @@ jobs:
       with:
         name: functionapp-zip
         path: ./artifact/functionapp.zip
+
 
     #- name: Publish artifact
      # uses: actions/upload-artifact@v4
