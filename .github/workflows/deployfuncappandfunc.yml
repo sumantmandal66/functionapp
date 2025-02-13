@@ -133,10 +133,10 @@ jobs:
             --resource-group ${{ env.resourceGroupName }} \
             --template-file ./bicep/modules/Function_APP.bicep \
             --parameters ./bicep/modules/parameters/${{ github.event.inputs.environment }}parameter.json \
-            --parameters AWSS3AcessKey="test" \
-            --parameters AWSS3SecretKey=${{ secrets.AWSS3SECRETKEY }} \
-            --parameters serviceBusQueueTriggerDisabled=${{ env.serviceBusQueueTriggerDisabled }} \
-            --parameters storageConnectionString=${{ secrets.AZUREWEBJOBSSTORAGE }} \
+            --parameters AWSS3AcessKey="${{ secrets.AWSS3AcessKey }}" \
+            --parameters AWSS3SecretKey="${{ secrets.AWSS3SECRETKEY }}" \
+            --parameters serviceBusQueueTriggerDisabled="${{ env.serviceBusQueueTriggerDisabled }}" \
+            --parameters storageConnectionString="${{ secrets.AZUREWEBJOBSSTORAGE }}" \
             # --parameters functionAppName="${{ env.functionAppName }}" \
             # --parameters location="${{ env.location }}" \
             # --parameters appServicePlanName=${{ env.appServicePlanName }} \
