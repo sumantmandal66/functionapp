@@ -10,7 +10,6 @@ param functionsWorkerRuntime string // New parameter for Functions Worker Runtim
 param applicationInsightsConnectionString string // New parameter for Application Insights Connection String
 param serviceBusQueueTriggerDisabled string // New parameter for Service Bus Queue Trigger Disabled
 param websiteRunFromPackage string // New parameter for WEBSITE_RUN_FROM_PACKAGE
-param websiteUsePlaceholderDotnetIsolated string // New parameter for WEBSITE_USE_PLACEHOLDER_DOTNETISOLATED
 param websiteVnetRouteAll string // New parameter for WEBSITE_VNET_ROUTE_ALL
 param storageConnectionString string
 param AWSS3AcessKey string
@@ -81,10 +80,6 @@ resource functionApp 'Microsoft.Web/sites@2022-03-01' = {
         {
           name: 'WEBSITE_RUN_FROM_PACKAGE'
           value: websiteRunFromPackage // Parameterized
-        }
-        {
-          name: 'WEBSITE_USE_PLACEHOLDER_DOTNETISOLATED'
-          value: websiteUsePlaceholderDotnetIsolated // Parameterized
         }
         {
           name: 'WEBSITE_VNET_ROUTE_ALL'
