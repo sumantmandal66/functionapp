@@ -11,5 +11,6 @@
             "functionsExtensionVersion":"~4",
             "functionsWorkerRuntime":"dotnet-isolated",
             "websiteRunFromPackage":"1",
-            "websiteVnetRouteAll":"1"
+            "websiteVnetRouteAll":"1",
+            "resource-group":"DefaultResourceGroup-NEU"
        }
