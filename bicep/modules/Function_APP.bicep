@@ -96,7 +96,7 @@ resource functionApp 'Microsoft.Web/sites@2022-03-01' = {
         }
         {
           name: 'AWSS3SecretKey'
-          value: AWSS3SecretKey"
+          value: AWSS3SecretKey
         }
       ]
       cors: {
