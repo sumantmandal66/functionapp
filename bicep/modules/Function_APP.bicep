@@ -1,16 +1,16 @@
-param functionAppName string = parameter(functionAppName)
-param location string = parameter(location)
-param storageAccountName string = parameter(storageAccountName)
-param appServicePlanName string = parameter(appServicePlanName)
-param applicationInsightsName string = parameter(applicationInsightsName)
-param logAnalyticsWorkspaceName string = parameter(logAnalyticsWorkspaceName)
-param appInsightsInstrumentationKey string = parameter(APPINSIGHTS_INSTRUMENTATIONKEY)
-param functionsExtensionVersion string = parameter(functionsExtensionVersion)
-param functionsWorkerRuntime string = parameter(functionsWorkerRuntime)
-param serviceBusQueueTriggerDisabled string = parameter(AzureWebJobs.ServiceBusQueueTrigger1.Disabled)
-param websiteRunFromPackage string = parameter(websiteRunFromPackage)
-param websiteVnetRouteAll string = parameter(websiteVnetRouteAll)
-param resourceGroup string = parameter(resourceGroup)
+param functionAppName string
+param location string
+param storageAccountName string
+param appServicePlanName string
+param applicationInsightsName string
+param logAnalyticsWorkspaceName string
+param appInsightsInstrumentationKey string
+param functionsExtensionVersion string
+param functionsWorkerRuntime string
+param serviceBusQueueTriggerDisabled string
+param websiteRunFromPackage string
+param websiteVnetRouteAll string
+param resourceGroup string
 param storageConnectionString string
 param AWSS3AcessKey string
 param AWSS3SecretKey string 
