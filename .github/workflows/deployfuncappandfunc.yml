@@ -125,7 +125,7 @@ jobs:
     - name: Deploy Azure infrastructure with Bicep
       run: |
         az deployment group create \
-            --resource-group <your-resource-group> \
+            --resource-group ${{ env.resourceGroupName }} \
             --template-file .bicep/modules/Function_APP.bicep \
             --parameters ./bicep/modules/parameters/${{ github.event.inputs.environment }}parameter.json \ # Your regular params file
             --parameters storageConnectionString=${{ secrets.AZURE_STORAGE_CONNECTION_STRING }} \
