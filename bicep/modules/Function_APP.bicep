@@ -10,7 +10,7 @@ param functionsWorkerRuntime string
 param serviceBusQueueTriggerDisabled string
 param websiteRunFromPackage string
 param websiteVnetRouteAll string
-param resourceGroup string
+param resourceGroupName string
 param storageConnectionString string
 param AWSS3AcessKey string
 param AWSS3SecretKey string 
