@@ -12,7 +12,9 @@ param serviceBusQueueTriggerDisabled string // New parameter for Service Bus Que
 param websiteRunFromPackage string // New parameter for WEBSITE_RUN_FROM_PACKAGE
 param websiteUsePlaceholderDotnetIsolated string // New parameter for WEBSITE_USE_PLACEHOLDER_DOTNETISOLATED
 param websiteVnetRouteAll string // New parameter for WEBSITE_VNET_ROUTE_ALL
-param storageConnectionString
+param storageConnectionString string
+param AWSS3AcessKey string
+param AWSS3SecretKey string
 
 // Fetch the resource ID for the Storage Account dynamically
 resource storageAccount 'Microsoft.Storage/storageAccounts@2021-02-01' existing = {
