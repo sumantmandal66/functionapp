@@ -133,15 +133,15 @@ jobs:
             storageAccountName=${{ env.storageAccountName }} \
             appServicePlanName=${{ env.appServicePlanName }} \
             applicationInsightsName=${{ env.applicationInsightsName }} \
-            logAnalyticsWorkspaceName=${{ env.logAnalyticsWorkspaceName }}
-            appInsightsInstrumentationKey=${{ env.appInsightsInstrumentationKey }}
-            functionsExtensionVersion=${{ env.functionsExtensionVersion }}
-            functionsWorkerRuntime=${{ env.functionsWorkerRuntime }}
-            serviceBusQueueTriggerDisabled=${{ env.serviceBusQueueTriggerDisabled }}
-            websiteRunFromPackage=${{ env.websiteRunFromPackage }}
-            websiteVnetRouteAll=${{ env.websiteVnetRouteAll }}
-            storageConnectionString=${{ env.AZUREWEBJOBSSTORAGE }}
-            AWSS3SecretKey=${{ env.AWSS3ACESSKEY }}
+            logAnalyticsWorkspaceName=${{ env.logAnalyticsWorkspaceName }} \
+            appInsightsInstrumentationKey=${{ env.appInsightsInstrumentationKey }} \
+            functionsExtensionVersion=${{ env.functionsExtensionVersion }} \
+            functionsWorkerRuntime=${{ env.functionsWorkerRuntime }} \
+            serviceBusQueueTriggerDisabled=${{ env.serviceBusQueueTriggerDisabled }} \
+            websiteRunFromPackage=${{ env.websiteRunFromPackage }} \
+            websiteVnetRouteAll=${{ env.websiteVnetRouteAll }} \
+            storageConnectionString=${{ env.AZUREWEBJOBSSTORAGE }} \
+            AWSS3SecretKey=${{ env.AWSS3ACESSKEY }} \
             AWSS3AcessKey=${{ env.AWSS3SECRETKEY }}
 
     - name: Download artifact
