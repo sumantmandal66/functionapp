@@ -1,6 +1,6 @@
        {
             "FUNCTIONS_WORKER_RUNTIME": "dotnet-isolated",         
-            "APPINSIGHTS_INSTRUMENTATIONKEY" : "applicationInsights.properties.InstrumentationKey",
+            "appInsightsInstrumentationKey" : "applicationInsights.properties.InstrumentationKey",
             "AzureWebJobs.ServiceBusQueueTrigger1.Disabled": "1",
             "functionAppName": "komatsu-func-app",
             "location": "eastus",
