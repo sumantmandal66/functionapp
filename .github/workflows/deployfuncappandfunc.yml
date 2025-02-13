@@ -145,9 +145,9 @@ jobs:
             # --parameters websiteRunFromPackage=${{ env.websiteRunFromPackage }} \
             # --parameters websiteVnetRouteAll=${{ env.websiteVnetRouteAll }} \
             # --parameters storageAccountName=${{ env.storageAccountName }} \
-            # --parameters storageConnectionString=${{ secrets.AZUREWEBJOBSSTORAGE }} \
-            # --parameters AWSS3AcessKey=${{ secrets.AWSS3AcessKey }} \
-            # --parameters AWSS3SecretKey=${{ secrets.AWSS3SECRETKEY }} 
+            --parameters storageConnectionString=${{ secrets.AZUREWEBJOBSSTORAGE }} \
+            --parameters AWSS3AcessKey=${{ secrets.AWSS3AcessKey }} \
+            --parameters AWSS3SecretKey=${{ secrets.AWSS3SECRETKEY }} 
 
     - name: Download artifact
       uses: actions/download-artifact@v4
