@@ -18,7 +18,7 @@ on:
           - prod
 
 env: 
-  resource-group: $(jq -r ".resource-group" ./bicep/modules/parameters/${{ inputs.environment }}parameter.json)
+  resourceGroup: $(jq -r '.resource-group' ./bicep/modules/parameters/${{ inputs.environment }}parameter.json)
   functionAppName: $(jq -r ".functionAppName" ./bicep/modules/parameters/${{ inputs.environment }}parameter.json)
   location: $(jq -r ".location" ./bicep/modules/parameters/${{ inputs.environment }}parameter.json)
   storageAccountName: $(jq -r ".storageAccountName" ./bicep/modules/parameters/${{ inputs.environment }}parameter.json)
@@ -125,7 +125,7 @@ jobs:
     - name: Deploy Azure infrastructure with Bicep
       run: |
         az deployment group create \
-          --resource-group ${{ env.resource-group }} \
+          --resource-group ${{ env.resourceGroup }} \
           --template-file bicep/modules/Function_APP.bicep \
           --parameters \
             functionAppName=${{ env.functionAppName }} \
@@ -180,14 +180,14 @@ jobs:
       run: |
         az functionapp deployment source config-zip \
         --name ${{ env.functionAppName }} \
-        --resource-group ${{ env.resourceGroupName }} \
+        --resource-group ${{ env.resourceGroup }} \
         --src ./artifact/functionapp.zip
 
     - name: Verify Deployment
       run: |
         az functionapp show \
         --name ${{ env.functionAppName }} \
-        --resource-group ${{ env.resourceGroupName }} 
+        --resource-group ${{ env.resourceGroup }} 
       
       # uses: azure/functions-action@v1
       # with:
