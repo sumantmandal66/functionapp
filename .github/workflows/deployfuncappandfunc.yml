@@ -3,7 +3,7 @@ name: Deploy .NET 8.0 Isolated Function App
 on:
   push:
     branches:
-      - main
+      - develop
   workflow_dispatch:
     inputs:
       environment:
