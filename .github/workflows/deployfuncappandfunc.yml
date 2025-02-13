@@ -20,7 +20,7 @@ on:
 env: 
   resourceGroupName: "$(jq -r '.resourceGroupName' ./bicep/modules/parameters/${{ github.event.inputs.environment }}parameter.json)"
   functionAppName: "$(jq -r '.functionAppName' ./bicep/modules/parameters/${{ github.event.inputs.environment }}parameter.json)"
-  location: $(jq -r ".location" ./bicep/modules/parameters/${{ github.event.inputs.environment }}parameter.json)
+  location: "$(jq -r '.location' ./bicep/modules/parameters/${{ github.event.inputs.environment }}parameter.json)"
   storageAccountName: $(jq -r ".storageAccountName" ./bicep/modules/parameters/${{ github.event.inputs.environment }}parameter.json)
   appServicePlanName: $(jq -r ".appServicePlanName" ./bicep/modules/parameters/${{ github.event.inputs.environment }}parameter.json)
   applicationInsightsName: $(jq -r ".applicationInsightsName" ./bicep/modules/parameters/${{ github.event.inputs.environment }}parameter.json)
@@ -128,8 +128,8 @@ jobs:
             --resource-group ${{ env.resourceGroupName }} \
             --template-file ./bicep/modules/Function_APP.bicep \
             --parameters ./bicep/modules/parameters/${{ github.event.inputs.environment }}parameter.json \
-            --parameters functionAppName=${{ env.functionAppName }} \
-            --parameters location=${{ env.location }} \
+            --parameters functionAppName="${{ env.functionAppName }}" \
+            --parameters location="${{ env.location }}" \
             --parameters appServicePlanName=${{ env.appServicePlanName }} \
             --parameters applicationInsightsName=${{ env.applicationInsightsName }} \
             --parameters logAnalyticsWorkspaceName=${{ env.logAnalyticsWorkspaceName }} \
