@@ -25,7 +25,13 @@ env:
   appServicePlanName: $(jq -r ".appServicePlanName" ./bicep/modules/parameters/${{ inputs.environment }}parameter.json)
   applicationInsightsName: $(jq -r ".applicationInsightsName" ./bicep/modules/parameters/${{ inputs.environment }}parameter.json)
   logAnalyticsWorkspaceName: $(jq -r ".logAnalyticsWorkspaceName" ./bicep/modules/parameters/${{ inputs.environment }}parameter.json)
-
+  appInsightsInstrumentationKey : $(jq -r ".APPINSIGHTS_INSTRUMENTATIONKEY" ./bicep/modules/parameters/${{ inputs.environment }}parameter.json)
+  functionsExtensionVersion :  $(jq -r ".functionsExtensionVersion" ./bicep/modules/parameters/${{ inputs.environment }}parameter.json)
+  functionsWorkerRuntime :  $(jq -r ".functionsWorkerRuntime" ./bicep/modules/parameters/${{ inputs.environment }}parameter.json)
+  serviceBusQueueTriggerDisabled :  $(jq -r ".AzureWebJobs.ServiceBusQueueTrigger1.Disabled" ./bicep/modules/parameters/${{ inputs.environment }}parameter.json)
+  websiteRunFromPackage :  $(jq -r ".websiteRunFromPackage" ./bicep/modules/parameters/${{ inputs.environment }}parameter.json)
+  websiteVnetRouteAll :  $(jq -r ".websiteVnetRouteAll" ./bicep/modules/parameters/${{ inputs.environment }}parameter.json)
+  
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -128,6 +134,12 @@ jobs:
             appServicePlanName=${{ env.appServicePlanName }} \
             applicationInsightsName=${{ env.applicationInsightsName }} \
             logAnalyticsWorkspaceName=${{ env.logAnalyticsWorkspaceName }}
+            appInsightsInstrumentationKey=${{ env.appInsightsInstrumentationKey }}
+            functionsExtensionVersion=${{ env.functionsExtensionVersion }}
+            functionsWorkerRuntime=${{ env.functionsWorkerRuntime }}
+            serviceBusQueueTriggerDisabled=${{ env.serviceBusQueueTriggerDisabled }}
+            websiteRunFromPackage=${{ env.websiteRunFromPackage }}
+            websiteVnetRouteAll=${{ env.websiteVnetRouteAll }}
             storageConnectionString=${{ env.AZUREWEBJOBSSTORAGE }}
             AWSS3SecretKey=${{ env.AWSS3ACESSKEY }}
             AWSS3AcessKey=${{ env.AWSS3SECRETKEY }}
