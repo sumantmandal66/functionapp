@@ -18,19 +18,19 @@ on:
           - prod
 
 env: 
-  resourceGroupName: $(jq -r '.resourceGroupName' ./bicep/modules/parameters/${{ inputs.environment }}parameter.json)
-  functionAppName: $(jq -r ".functionAppName" ./bicep/modules/parameters/${{ inputs.environment }}parameter.json)
-  location: $(jq -r ".location" ./bicep/modules/parameters/${{ inputs.environment }}parameter.json)
-  storageAccountName: $(jq -r ".storageAccountName" ./bicep/modules/parameters/${{ inputs.environment }}parameter.json)
-  appServicePlanName: $(jq -r ".appServicePlanName" ./bicep/modules/parameters/${{ inputs.environment }}parameter.json)
-  applicationInsightsName: $(jq -r ".applicationInsightsName" ./bicep/modules/parameters/${{ inputs.environment }}parameter.json)
-  logAnalyticsWorkspaceName: $(jq -r ".logAnalyticsWorkspaceName" ./bicep/modules/parameters/${{ inputs.environment }}parameter.json)
-  appInsightsInstrumentationKey : $(jq -r ".APPINSIGHTS_INSTRUMENTATIONKEY" ./bicep/modules/parameters/${{ inputs.environment }}parameter.json)
-  functionsExtensionVersion :  $(jq -r ".functionsExtensionVersion" ./bicep/modules/parameters/${{ inputs.environment }}parameter.json)
-  functionsWorkerRuntime :  $(jq -r ".functionsWorkerRuntime" ./bicep/modules/parameters/${{ inputs.environment }}parameter.json)
-  serviceBusQueueTriggerDisabled :  $(jq -r ".AzureWebJobs.ServiceBusQueueTrigger1.Disabled" ./bicep/modules/parameters/${{ inputs.environment }}parameter.json)
-  websiteRunFromPackage :  $(jq -r ".websiteRunFromPackage" ./bicep/modules/parameters/${{ inputs.environment }}parameter.json)
-  websiteVnetRouteAll :  $(jq -r ".websiteVnetRouteAll" ./bicep/modules/parameters/${{ inputs.environment }}parameter.json)
+  resourceGroupName: $(jq -r '.resourceGroupName' ./bicep/modules/parameters/${{ github.event.inputs.environment }}parameter.json)
+  functionAppName: $(jq -r ".functionAppName" ./bicep/modules/parameters/${{ github.event.inputs.environment }}parameter.json)
+  location: $(jq -r ".location" ./bicep/modules/parameters/${{ github.event.inputs.environment }}parameter.json)
+  storageAccountName: $(jq -r ".storageAccountName" ./bicep/modules/parameters/${{ github.event.inputs.environment }}parameter.json)
+  appServicePlanName: $(jq -r ".appServicePlanName" ./bicep/modules/parameters/${{ github.event.inputs.environment }}parameter.json)
+  applicationInsightsName: $(jq -r ".applicationInsightsName" ./bicep/modules/parameters/${{ github.event.inputs.environment }}parameter.json)
+  logAnalyticsWorkspaceName: $(jq -r ".logAnalyticsWorkspaceName" ./bicep/modules/parameters/${{ github.event.inputs.environment }}parameter.json)
+  appInsightsInstrumentationKey : $(jq -r ".APPINSIGHTS_INSTRUMENTATIONKEY" ./bicep/modules/parameters/${{ github.event.inputs.environment }}parameter.json)
+  functionsExtensionVersion :  $(jq -r ".functionsExtensionVersion" ./bicep/modules/parameters/${{ github.event.inputs.environment }}parameter.json)
+  functionsWorkerRuntime :  $(jq -r ".functionsWorkerRuntime" ./bicep/modules/parameters/${{ github.event.inputs.environment }}parameter.json)
+  serviceBusQueueTriggerDisabled :  $(jq -r ".AzureWebJobs.ServiceBusQueueTrigger1.Disabled" ./bicep/modules/parameters/${{ github.event.inputs.environment }}parameter.json)
+  websiteRunFromPackage :  $(jq -r ".websiteRunFromPackage" ./bicep/modules/parameters/${{ github.event.inputs.environment }}parameter.json)
+  websiteVnetRouteAll :  $(jq -r ".websiteVnetRouteAll" ./bicep/modules/parameters/${{ github.event.inputs.environment }}parameter.json)
   
 jobs:
   build:
@@ -128,9 +128,21 @@ jobs:
             --resource-group ${{ env.resourceGroupName }} \
             --template-file ./bicep/modules/Function_APP.bicep \
             --parameters ./bicep/modules/parameters/${{ github.event.inputs.environment }}parameter.json \
-            --parameters storageConnectionString=${{ secrets.AZURE_STORAGE_CONNECTION_STRING }} \
-            --parameters awsAccessKeyId=${{ secrets.AWS_ACCESS_KEY_ID }} \
-            --parameters awsSecretAccessKey=${{ secrets.AWS_SECRET_ACCESS_KEY }}
+            --parameters functionAppName=${{ env.functionAppName }} \
+            --parameters location=${{ env.location }} \
+            --parameters appServicePlanName=${{ env.appServicePlanName }} \
+            --parameters applicationInsightsName=${{ env.applicationInsightsName }} \
+            --parameters logAnalyticsWorkspaceName=${{ env.logAnalyticsWorkspaceName }} \
+            --parameters appInsightsInstrumentationKey=${{ env.appInsightsInstrumentationKey }} \
+            --parameters functionsExtensionVersion=${{ env.functionsExtensionVersion }} \
+            --parameters functionsWorkerRuntime=${{ env.functionsWorkerRuntime }} \
+            --parameters serviceBusQueueTriggerDisabled=${{ env.serviceBusQueueTriggerDisabled }} \
+            --parameters websiteRunFromPackage=${{ env.websiteRunFromPackage }} \
+            --parameters websiteVnetRouteAll=${{ env.websiteVnetRouteAll }} \
+            --parameters storageAccountName=${{ env.storageAccountName }}
+            --parameters storageConnectionString=${{ secrets.AZUREWEBJOBSSTORAGE }} \
+            --parameters AWSS3AcessKey=${{ secrets.AWSS3AcessKey }} 
+            --parameters AWSS3SecretKey=${{ secrets.AWSS3SECRETKEY }} 
 
     - name: Download artifact
       uses: actions/download-artifact@v4
