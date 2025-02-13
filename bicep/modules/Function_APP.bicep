@@ -4,7 +4,14 @@ param storageAccountName string
 param appServicePlanName string
 param applicationInsightsName string
 param logAnalyticsWorkspaceName string // Name of the existing Log Analytics Workspace
-//param allowedOrigins array // Array parameter to pass the allowed origins for CORS
+param appInsightsInstrumentationKey string // New parameter for Application Insights Instrumentation Key
+param functionsExtensionVersion string // New parameter for Functions Extension Version
+param functionsWorkerRuntime string // New parameter for Functions Worker Runtime
+param applicationInsightsConnectionString string // New parameter for Application Insights Connection String
+param serviceBusQueueTriggerDisabled string // New parameter for Service Bus Queue Trigger Disabled
+param websiteRunFromPackage string // New parameter for WEBSITE_RUN_FROM_PACKAGE
+param websiteUsePlaceholderDotnetIsolated string // New parameter for WEBSITE_USE_PLACEHOLDER_DOTNETISOLATED
+param websiteVnetRouteAll string // New parameter for WEBSITE_VNET_ROUTE_ALL
 
 // Fetch the resource ID for the Storage Account dynamically
 resource storageAccount 'Microsoft.Storage/storageAccounts@2021-02-01' existing = {
@@ -13,10 +20,10 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2021-02-01' existing 
 }
 
  //Fetch the Storage Account Keys
- var storageAccountKey = listKeys(storageAccount.id, storageAccount.apiVersion).keys[0].value
+ //var storageAccountKey = listKeys(storageAccount.id, storageAccount.apiVersion).keys[0].value
 
 // Construct the Connection String
- var storageConnectionString = 'DefaultEndpointsProtocol=https;AccountName=${storageAccount.name};AccountKey=${storageAccountKey};EndpointSuffix=${environment().suffixes.storage}'
+//var storageConnectionString = 'DefaultEndpointsProtocol=https;AccountName=${storageAccount.name};AccountKey=${storageAccountKey};EndpointSuffix=${environment().suffixes.storage}'
 
 // Create a new App Service Plan in the Consumption plan (Dynamic Tier)
 resource appServicePlan 'Microsoft.Web/serverfarms@2021-02-01' existing = {
@@ -46,11 +53,11 @@ resource functionApp 'Microsoft.Web/sites@2022-03-01' = {
       appSettings: [
         {
           name: 'FUNCTIONS_EXTENSION_VERSION'
-          value: '~4' // Use the version that suits your requirements
+          value: functionsExtensionVersion // Parameterized
         }
         {
           name: 'FUNCTIONS_WORKER_RUNTIME'
-          value: 'dotnet-isolated' // Change this to 'dotnet', 'python', etc.
+          value: functionsWorkerRuntime // Parameterized
         }
         {
           name: 'AzureWebJobsStorage'
@@ -58,27 +65,35 @@ resource functionApp 'Microsoft.Web/sites@2022-03-01' = {
         }
         {
           name: 'APPINSIGHTS_INSTRUMENTATIONKEY'
-          value: applicationInsights.properties.InstrumentationKey
+          value: appInsightsInstrumentationKey // Parameterized
         }
         {
           name: 'APPLICATIONINSIGHTS_CONNECTION_STRING'
-          value: 'InstrumentationKey=2a663696-f76b-4628-b694-5d2697016ba3;IngestionEndpoint=https://eastus-8.in.applicationinsights.azure.com/;LiveEndpoint=https://eastus.livediagnostics.monitor.azure.com/;ApplicationId=c6dd3ad0-200f-43fd-93eb-e76b167f4ae5'
+          value: applicationInsightsConnectionString // Parameterized
         }
         {
           name: 'AzureWebJobs.ServiceBusQueueTrigger1.Disabled'
-          value: '1'
+          value: serviceBusQueueTriggerDisabled // Parameterized
         }
         {
           name: 'WEBSITE_RUN_FROM_PACKAGE'
-          value: '1'
+          value: websiteRunFromPackage // Parameterized
         }
         {
           name: 'WEBSITE_USE_PLACEHOLDER_DOTNETISOLATED'
-          value: '1'
+          value: websiteUsePlaceholderDotnetIsolated // Parameterized
         }
         {
           name: 'WEBSITE_VNET_ROUTE_ALL'
-          value: '1'        
+          value: websiteVnetRouteAll // Parameterized
+        }
+        {
+          name: 'AWSS3AcessKey'
+          value: "${{ secrets.AWSS3AcessKey }}"
+        }
+        {
+          name: 'AWSS3SecretKey'
+          value: "${{ secrets.AWSS3SecretKey }}"
         }
       ]
       cors: {
