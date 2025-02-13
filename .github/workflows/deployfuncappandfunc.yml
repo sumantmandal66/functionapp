@@ -128,6 +128,7 @@ jobs:
             appServicePlanName=${{ env.appServicePlanName }} \
             applicationInsightsName=${{ env.applicationInsightsName }} \
             logAnalyticsWorkspaceName=${{ env.logAnalyticsWorkspaceName }}
+            storageConnectionString=${{ env.AZUREWEBJOBSSTORAGE }}
 
     - name: Download artifact
       uses: actions/download-artifact@v4
