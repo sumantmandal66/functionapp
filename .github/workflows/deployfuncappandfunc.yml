@@ -18,13 +18,13 @@ on:
           - prod
 
 env: 
-  resource-group: $(jq -r ".resource-group" ./bicep/modules/parameters/${{ inputs.environment }}Parameter.json)
-  functionAppName: $(jq -r ".functionAppName" ./bicep/modules/parameters/${{ inputs.environment }}Parameter.json)
-  location: $(jq -r ".location" ./bicep/modules/parameters/${{ inputs.environment }}Parameter.json)
-  storageAccountName: $(jq -r ".storageAccountName" ./bicep/modules/parameters/${{ inputs.environment }}Parameter.json)
-  appServicePlanName: $(jq -r ".appServicePlanName" ./bicep/modules/parameters/${{ inputs.environment }}Parameter.json)
-  applicationInsightsName: $(jq -r ".applicationInsightsName" ./bicep/modules/parameters/${{ inputs.environment }}Parameter.json)
-  logAnalyticsWorkspaceName: $(jq -r ".logAnalyticsWorkspaceName" ./bicep/modules/parameters/${{ inputs.environment }}Parameter.json)
+  resource-group: $(jq -r ".resource-group" ./bicep/modules/parameters/${{ inputs.environment }}parameter.json)
+  functionAppName: $(jq -r ".functionAppName" ./bicep/modules/parameters/${{ inputs.environment }}parameter.json)
+  location: $(jq -r ".location" ./bicep/modules/parameters/${{ inputs.environment }}parameter.json)
+  storageAccountName: $(jq -r ".storageAccountName" ./bicep/modules/parameters/${{ inputs.environment }}parameter.json)
+  appServicePlanName: $(jq -r ".appServicePlanName" ./bicep/modules/parameters/${{ inputs.environment }}parameter.json)
+  applicationInsightsName: $(jq -r ".applicationInsightsName" ./bicep/modules/parameters/${{ inputs.environment }}parameter.json)
+  logAnalyticsWorkspaceName: $(jq -r ".logAnalyticsWorkspaceName" ./bicep/modules/parameters/${{ inputs.environment }}parameter.json)
 
 jobs:
   build:
