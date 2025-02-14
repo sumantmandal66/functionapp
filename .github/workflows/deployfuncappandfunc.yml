@@ -18,9 +18,7 @@ on:
           - prod
 
 env: 
-  resourceGroupName: $(jq -r '.resourceGroupName' ./bicep/modules/parameters/${{ github.event.inputs.environment }}parameter.json)
-  functionAppName: $(jq -r '.functionAppName' ./bicep/modules/parameters/${{ github.event.inputs.environment }}parameter.json)
-  location: $(jq -r '.location' ./bicep/modules/parameters/${{ github.event.inputs.environment }}parameter.json)
+  
   storageAccountName: $(jq -r ".storageAccountName" ./bicep/modules/parameters/${{ github.event.inputs.environment }}parameter.json)
   appServicePlanName: $(jq -r ".appServicePlanName" ./bicep/modules/parameters/${{ github.event.inputs.environment }}parameter.json)
   applicationInsightsName: $(jq -r ".applicationInsightsName" ./bicep/modules/parameters/${{ github.event.inputs.environment }}parameter.json)
@@ -31,7 +29,9 @@ env:
   serviceBusQueueTriggerDisabled :  $(jq -r ".AzureWebJobs.ServiceBusQueueTrigger1.Disabled" ./bicep/modules/parameters/${{ github.event.inputs.environment }}parameter.json)
   websiteRunFromPackage :  $(jq -r ".websiteRunFromPackage" ./bicep/modules/parameters/${{ github.event.inputs.environment }}parameter.json)
   websiteVnetRouteAll :  $(jq -r ".websiteVnetRouteAll" ./bicep/modules/parameters/${{ github.event.inputs.environment }}parameter.json)
-  
+  resourceGroupName: ${{ fromJson('$(jq -r ".resourceGroupName" ./bicep/modules/parameters/${{ github.event.inputs.environment }}parameter.json)') }}
+  functionAppName: ${{ fromJson('$(jq -r ".functionAppName" ./bicep/modules/parameters/${{ github.event.inputs.environment }}parameter.json)') }}
+  location: ${{ fromJson('$(jq -r ".location" ./bicep/modules/parameters/${{ github.event.inputs.environment }}parameter.json)') }}
 
 jobs:
   build:
@@ -137,18 +137,18 @@ jobs:
             --parameters ${{ secrets.AWSS3SECRETKEY }} \
             --parameters ${{ env.serviceBusQueueTriggerDisabled }} \
             --parameters ${{ secrets.AZUREWEBJOBSSTORAGE }} \
-            # --parameters functionAppName="${{ env.functionAppName }}" \
-            # --parameters location="${{ env.location }}" \
-            # --parameters appServicePlanName=${{ env.appServicePlanName }} \
-            # --parameters applicationInsightsName=${{ env.applicationInsightsName }} \
-            # --parameters logAnalyticsWorkspaceName=${{ env.logAnalyticsWorkspaceName }} \
-            # --parameters appInsightsInstrumentationKey=${{ env.appInsightsInstrumentationKey }} \
-            # --parameters functionsExtensionVersion=${{ env.functionsExtensionVersion }} \
-            # --parameters functionsWorkerRuntime=${{ env.functionsWorkerRuntime }} \
-            # --parameters serviceBusQueueTriggerDisabled=${{ env.serviceBusQueueTriggerDisabled }} \
-            # --parameters websiteRunFromPackage=${{ env.websiteRunFromPackage }} \
-            # --parameters websiteVnetRouteAll=${{ env.websiteVnetRouteAll }} \
-            # --parameters storageAccountName=${{ env.storageAccountName }} \            
+            --parameters functionAppName=${{ env.functionAppName }} \
+            --parameters location=${{ env.location }} \
+            --parameters appServicePlanName=${{ env.appServicePlanName }} \
+            --parameters applicationInsightsName=${{ env.applicationInsightsName }} \
+            --parameters logAnalyticsWorkspaceName=${{ env.logAnalyticsWorkspaceName }} \
+            --parameters appInsightsInstrumentationKey=${{ env.appInsightsInstrumentationKey }} \
+            --parameters functionsExtensionVersion=${{ env.functionsExtensionVersion }} \
+            --parameters functionsWorkerRuntime=${{ env.functionsWorkerRuntime }} \
+            --parameters serviceBusQueueTriggerDisabled=${{ env.serviceBusQueueTriggerDisabled }} \
+            --parameters websiteRunFromPackage=${{ env.websiteRunFromPackage }} \
+            --parameters websiteVnetRouteAll=${{ env.websiteVnetRouteAll }} \
+            --parameters storageAccountName=${{ env.storageAccountName }}          
 
     - name: Download artifact
       uses: actions/download-artifact@v4
