@@ -127,7 +127,7 @@ jobs:
     - name: Deploy Azure infrastructure with Bicep
       run: |
         fileContent=$(cat ./bicep/modules/parameters/${{ github.event.inputs.environment }}parameter.json)
-
+    
         echo '
         {
           "AWSS3AcessKey": "${{ secrets.AWSS3ACESSKEY }}",
@@ -136,15 +136,15 @@ jobs:
         }' > inlineParams.json
     
         combineParams=$(jq -s '.[0] * .[1]' ./bicep/modules/parameters/${{ github.event.inputs.environment }}parameter.json inlineParams.json)
-
-        echo "$combineParams" > mergedParamters.json
-
-        cat mergedParamters.json
+    
+        echo "$combineParams" > mergedParameters.json
+    
+        cat mergedParameters.json
         
         az deployment group create \
             --resource-group "${{ env.resourceGroupName }}" \
             --template-file ./bicep/modules/Function_APP.bicep \
-            --parameters @mergedParamters.json        
+            --parameters @mergedParameters.json      
 
     - name: Download artifact
       uses: actions/download-artifact@v4
