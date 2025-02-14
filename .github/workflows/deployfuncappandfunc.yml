@@ -133,9 +133,9 @@ jobs:
         az deployment group create \
             --resource-group ${{ env.resourceGroupName }} \
             --template-file ./bicep/modules/Function_APP.bicep \
-            --parameters AWSS3AcessKey=${{ secrets.AWSS3AcessKey }} \
-            --parameters AWSS3SECRETKEY=${{ secrets.AWSS3SECRETKEY }} \
-            --parameters AZUREWEBJOBSSTORAGE=${{ secrets.AZUREWEBJOBSSTORAGE }} \
+            --parameters AWSS3AcessKey=${{ secrets.AWSS3ACESSKEY }} \
+            --parameters AWSS3SecretKey=${{ secrets.AWSS3SECRETKEY }} \
+            --parameters storageConnectionString=${{ secrets.AZUREWEBJOBSSTORAGE }} \
             # --parameters functionAppName=${{ env.functionAppName }} \
             # --parameters location=${{ env.location }} \
             # --parameters appServicePlanName=${{ env.appServicePlanName }} \
