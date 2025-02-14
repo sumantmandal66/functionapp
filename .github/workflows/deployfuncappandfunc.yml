@@ -84,7 +84,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     needs: build
-    # environment: ${{ env.ENVIRONMENT }}
+    environment: ${{ env.ENVIRONMENT }}
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
