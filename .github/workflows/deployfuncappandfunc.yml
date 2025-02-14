@@ -19,6 +19,8 @@ on:
 
 env: 
   
+  functionAppName: $(jq -r '.functionAppName' ./bicep/modules/parameters/${{ github.event.inputs.environment }}parameter.json)
+  location: $(jq -r '.location' ./bicep/modules/parameters/${{ github.event.inputs.environment }}parameter.json)
   storageAccountName: $(jq -r ".storageAccountName" ./bicep/modules/parameters/${{ github.event.inputs.environment }}parameter.json)
   appServicePlanName: $(jq -r ".appServicePlanName" ./bicep/modules/parameters/${{ github.event.inputs.environment }}parameter.json)
   applicationInsightsName: $(jq -r ".applicationInsightsName" ./bicep/modules/parameters/${{ github.event.inputs.environment }}parameter.json)
@@ -29,10 +31,8 @@ env:
   serviceBusQueueTriggerDisabled :  $(jq -r ".AzureWebJobs.ServiceBusQueueTrigger1.Disabled" ./bicep/modules/parameters/${{ github.event.inputs.environment }}parameter.json)
   websiteRunFromPackage :  $(jq -r ".websiteRunFromPackage" ./bicep/modules/parameters/${{ github.event.inputs.environment }}parameter.json)
   websiteVnetRouteAll :  $(jq -r ".websiteVnetRouteAll" ./bicep/modules/parameters/${{ github.event.inputs.environment }}parameter.json)
-  resourceGroupName: ${{ fromJson('$(jq -r ".resourceGroupName" ./bicep/modules/parameters/${{ github.event.inputs.environment }}parameter.json)') }}
-  functionAppName: ${{ fromJson('$(jq -r ".functionAppName" ./bicep/modules/parameters/${{ github.event.inputs.environment }}parameter.json)') }}
-  location: ${{ fromJson('$(jq -r ".location" ./bicep/modules/parameters/${{ github.event.inputs.environment }}parameter.json)') }}
-
+  resourceGroupName: ${{ fromJson('$(jq -r '.resourceGroupName' ./bicep/modules/parameters/${{ github.event.inputs.environment }}parameter.json)') }}
+  
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -40,6 +40,9 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v3
+    
+    - name: xyz
+      run: echo "$ {{ (jq -r ".storageAccountName" ./bicep/modules/parameters/${{ github.event.inputs.environment }}parameter.json) }}"
 
     - name: Set up .NET 8.x SDK
       uses: actions/setup-dotnet@v3
