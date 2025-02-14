@@ -38,6 +38,7 @@ jobs:
       run: |
           RESOURCE_GROUP_NAME=$(jq -r ".resourceGroupName" ./bicep/modules/parameters/${ENVIRONMENT}parameter.json)
           echo "RESOURCE_GROUP_NAME=${RESOURCE_GROUP_NAME}" >> $GITHUB_ENV
+          echo "resource_group_name=${RESOURCE_GROUP_NAME}" >> $GITHUB_OUTPUT
           echo "ENVIRONMENT=${ENVIRONMENT}" >> $GITHUB_ENV
 
     - name: Print environment variables
@@ -153,7 +154,7 @@ jobs:
         cat mergedParameters.json
         
         az deployment group create \
-            --resource-group "${RESOURCE_GROUP_NAME}" \
+            --resource-group "${{ needs.build.outputs.resource_group_name }}" \
             --template-file ./bicep/modules/Function_APP.bicep \
             --parameters @mergedParameters.json      
 
