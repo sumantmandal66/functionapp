@@ -18,8 +18,8 @@ on:
           - prod
 
 env: 
-  resourceGroupName: $(jq -r '.resourceGroupName' ./bicep/modules/parameters/${{ github.event.inputs.environment }}parameter.json)
-  functionAppName: $(jq -r '.functionAppName' ./bicep/modules/parameters/${{ github.event.inputs.environment }}parameter.json)
+  resourceGroupName: $(jq -r ".resourceGroupName" ./bicep/modules/parameters/${{ github.event.inputs.environment }}parameter.json)
+  functionAppName: $(jq -r ".functionAppName" ./bicep/modules/parameters/${{ github.event.inputs.environment }}parameter.json)
   location: $(jq -r '.location' ./bicep/modules/parameters/${{ github.event.inputs.environment }}parameter.json)
   storageAccountName: $(jq -r ".storageAccountName" ./bicep/modules/parameters/${{ github.event.inputs.environment }}parameter.json)
   appServicePlanName: $(jq -r ".appServicePlanName" ./bicep/modules/parameters/${{ github.event.inputs.environment }}parameter.json)
@@ -31,7 +31,9 @@ env:
   serviceBusQueueTriggerDisabled :  $(jq -r ".AzureWebJobs.ServiceBusQueueTrigger1.Disabled" ./bicep/modules/parameters/${{ github.event.inputs.environment }}parameter.json)
   websiteRunFromPackage :  $(jq -r ".websiteRunFromPackage" ./bicep/modules/parameters/${{ github.event.inputs.environment }}parameter.json)
   websiteVnetRouteAll :  $(jq -r ".websiteVnetRouteAll" ./bicep/modules/parameters/${{ github.event.inputs.environment }}parameter.json)
+  keyVaultName: $(jq -r ".keyVaultName" ./bicep/parameters/${{ inputs.environment }}Parameters.json)
   
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -134,7 +136,6 @@ jobs:
         az deployment group create \
             --resource-group ${{ env.resourceGroupName }} \
             --template-file ./bicep/modules/Function_APP.bicep \
-            --parameters ./bicep/modules/parameters/${{ github.event.inputs.environment }}parameter.json \
             --parameters ${{ secrets.AWSS3AcessKey }} \
             --parameters ${{ secrets.AWSS3SECRETKEY }} \
             --parameters ${{ env.serviceBusQueueTriggerDisabled }} \
