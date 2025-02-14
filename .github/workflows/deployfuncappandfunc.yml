@@ -19,6 +19,7 @@ on:
 
 env: 
   resourceGroupName: $(jq -r ".resourceGroupName" ./bicep/modules/parameters/${{ github.event.inputs.environment }}parameter.json)
+  ENVIRONMENT: ${{ github.event.inputs.environment }}
 
 jobs:
   build:
