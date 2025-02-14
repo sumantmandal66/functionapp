@@ -1,16 +1,16 @@
-       {
-            "FUNCTIONS_WORKER_RUNTIME": "dotnet-isolated",         
-            "appInsightsInstrumentationKey" : "applicationInsights.properties.InstrumentationKey",
-            "serviceBusQueueTriggerDisabled": "1",
-            "functionAppName": "komatsu-func-app",
-            "location": "eastus",
-            "storageAccountName": "demoteststgacc",
-            "appServicePlanName": "appservicekomatsu",
-            "applicationInsightsName": "appinsightskomastufuncapp",
-            "logAnalyticsWorkspaceName": "law-komatsu-dev",
-            "functionsExtensionVersion": "~4",
-            "functionsWorkerRuntime": "dotnet-isolated",
-            "websiteRunFromPackage": "1",
-            "websiteVnetRouteAll": "1",
-            "resourceGroupName": "DefaultResourceGroup-NEU"
-       }
+{
+       "FUNCTIONS_WORKER_RUNTIME": "dotnet-isolated",
+       "appInsightsInstrumentationKey": "applicationInsights.properties.InstrumentationKey",
+       "serviceBusQueueTriggerDisabled": "1",
+       "functionAppName": "komatsu-func-app",
+       "location": "eastus",
+       "storageAccountName": "demoteststgacc",
+       "appServicePlanName": "appservicekomatsu",
+       "applicationInsightsName": "appinsightskomastufuncapp",
+       "logAnalyticsWorkspaceName": "law-komatsu-dev",
+       "functionsExtensionVersion": "~4",
+       "functionsWorkerRuntime": "dotnet-isolated",
+       "websiteRunFromPackage": "1",
+       "websiteVnetRouteAll": "1",
+       "resourceGroupName": "DefaultResourceGroup-NEU"
+}
