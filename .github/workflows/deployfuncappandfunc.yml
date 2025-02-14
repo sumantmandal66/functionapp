@@ -127,7 +127,7 @@ jobs:
     - name: Deploy Azure infrastructure with Bicep
       run: |
         mergedParams=$(jq -n \
-          --arg file ./bicep/modules/parameters/${{ github.event.inputs.environment }}parameter.json \
+          --argfile file ./bicep/modules/parameters/${{ github.event.inputs.environment }}parameter.json \
           --arg AWSS3AcessKey "${{ secrets.AWSS3ACESSKEY }}" \
           --arg AWSS3SecretKey "${{ secrets.AWSS3SECRETKEY }}" \
           --arg storageConnectionString "${{ secrets.AZUREWEBJOBSSTORAGE }}" \
