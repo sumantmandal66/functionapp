@@ -133,22 +133,21 @@ jobs:
         az deployment group create \
             --resource-group ${{ env.resourceGroupName }} \
             --template-file ./bicep/modules/Function_APP.bicep \
-            --parameters ${{ secrets.AWSS3AcessKey }} \
-            --parameters ${{ secrets.AWSS3SECRETKEY }} \
-            --parameters ${{ env.serviceBusQueueTriggerDisabled }} \
-            --parameters ${{ secrets.AZUREWEBJOBSSTORAGE }} \
-            --parameters functionAppName=${{ env.functionAppName }} \
-            --parameters location=${{ env.location }} \
-            --parameters appServicePlanName=${{ env.appServicePlanName }} \
-            --parameters applicationInsightsName=${{ env.applicationInsightsName }} \
-            --parameters logAnalyticsWorkspaceName=${{ env.logAnalyticsWorkspaceName }} \
-            --parameters appInsightsInstrumentationKey=${{ env.appInsightsInstrumentationKey }} \
-            --parameters functionsExtensionVersion=${{ env.functionsExtensionVersion }} \
-            --parameters functionsWorkerRuntime=${{ env.functionsWorkerRuntime }} \
-            --parameters serviceBusQueueTriggerDisabled=${{ env.serviceBusQueueTriggerDisabled }} \
-            --parameters websiteRunFromPackage=${{ env.websiteRunFromPackage }} \
-            --parameters websiteVnetRouteAll=${{ env.websiteVnetRouteAll }} \
-            --parameters storageAccountName=${{ env.storageAccountName }}          
+            --parameters AWSS3AcessKey=${{ secrets.AWSS3AcessKey }} \
+            --parameters AWSS3SECRETKEY=${{ secrets.AWSS3SECRETKEY }} \
+            --parameters AZUREWEBJOBSSTORAGE=${{ secrets.AZUREWEBJOBSSTORAGE }} \
+            # --parameters functionAppName=${{ env.functionAppName }} \
+            # --parameters location=${{ env.location }} \
+            # --parameters appServicePlanName=${{ env.appServicePlanName }} \
+            # --parameters applicationInsightsName=${{ env.applicationInsightsName }} \
+            # --parameters logAnalyticsWorkspaceName=${{ env.logAnalyticsWorkspaceName }} \
+            # --parameters appInsightsInstrumentationKey=${{ env.appInsightsInstrumentationKey }} \
+            # --parameters functionsExtensionVersion=${{ env.functionsExtensionVersion }} \
+            # --parameters functionsWorkerRuntime=${{ env.functionsWorkerRuntime }} \
+            # --parameters serviceBusQueueTriggerDisabled=${{ env.serviceBusQueueTriggerDisabled }} \
+            # --parameters websiteRunFromPackage=${{ env.websiteRunFromPackage }} \
+            # --parameters websiteVnetRouteAll=${{ env.websiteVnetRouteAll }} \
+            # --parameters storageAccountName=${{ env.storageAccountName }}          
 
     - name: Download artifact
       uses: actions/download-artifact@v4
