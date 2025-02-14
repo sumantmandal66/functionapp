@@ -130,7 +130,10 @@ jobs:
 
     - name: check secrets
       run: |
-          echo "stog ${{ secrets.AZUREWEBJOBSSTORAGE }}"
+          if [ -z "${{ secrets.AZUREWEBJOBSSTORAGE }}" ]; then
+            echo "AZUREWEBJOBSSTORAGE is not set"
+            exit 1
+          fi          
  
     - name: Deploy Azure infrastructure with Bicep
       run: |
