@@ -128,11 +128,12 @@ jobs:
     - name: Install Bicep
       run: az bicep install
      
-    - name: Debug secrets
+    - name: Debug secrets (length check)
       run: |
-          echo "AWS S3 Access Key: ${{ secrets.AWSS3ACESSKEY }}"
-          echo "AWS S3 Secret Key: ${{ secrets.AWSS3SECRETKEY }}"
-          echo "Azure Storage Connection String: ${{ secrets.AZUREWEBJOBSSTORAGE }}"
+        echo "AWS S3 Access Key Length: ${#secrets.AWSS3AcessKey}"
+        echo "AWS S3 Secret Key Length: ${#secrets.AWSS3SecretKey}"
+        echo "Azure Storage Connection String Length: ${#secrets.AZUREWEBJOBSSTORAGE}"
+
  
     - name: Deploy Azure infrastructure with Bicep
       run: |
