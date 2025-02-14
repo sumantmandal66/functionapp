@@ -142,7 +142,7 @@ jobs:
         cat mergedParamters.json
         
         az deployment group create \
-            --resource-group ${{ env.resourceGroupName }} \
+            --resource-group "${{ env.resourceGroupName }}" \
             --template-file ./bicep/modules/Function_APP.bicep \
             --parameters @mergedParamters.json        
 
