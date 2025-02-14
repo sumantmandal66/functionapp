@@ -129,7 +129,7 @@ jobs:
         az deployment group create \
             --resource-group ${{ env.resourceGroupName }} \
             --template-file ./bicep/modules/Function_APP.bicep \
-            --parameters ./bicep/modules/parameters/${{ github.event.inputs.environment }}parameter.json \
+            --parameters @./bicep/modules/parameters/${{ github.event.inputs.environment }}parameter.json \
             --parameters AWSS3AcessKey="${{ secrets.AWSS3ACESSKEY }}" \
             --parameters AWSS3SecretKey="${{ secrets.AWSS3SECRETKEY }}" \
             --parameters storageConnectionString="${{ secrets.AZUREWEBJOBSSTORAGE }}"
