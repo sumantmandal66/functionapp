@@ -127,15 +127,24 @@ jobs:
 
     - name: Install Bicep
       run: az bicep install
-      
+     
+    - name: Debug secrets
+      run: |
+          echo "AWS S3 Access Key: ${{ secrets.AWSS3ACESSKEY }}"
+          echo "AWS S3 Secret Key: ${{ secrets.AWSS3SECRETKEY }}"
+          echo "Azure Storage Connection String: ${{ secrets.AZUREWEBJOBSSTORAGE }}"
+ 
     - name: Deploy Azure infrastructure with Bicep
       run: |
         az deployment group create \
             --resource-group ${{ env.resourceGroupName }} \
             --template-file ./bicep/modules/Function_APP.bicep \
-            --parameters AWSS3AcessKey=${{ secrets.dev.AWSS3ACESSKEY }} \
-            --parameters AWSS3SecretKey=${{ secrets.dev.AWSS3SECRETKEY }} \
-            --parameters storageConnectionString=${{ secrets.dev.AZUREWEBJOBSSTORAGE }} \
+            #--parameters AWSS3AcessKey=${{ secrets.dev.AWSS3ACESSKEY }} \
+            #--parameters AWSS3SecretKey=${{ secrets.dev.AWSS3SECRETKEY }} \
+            #--parameters storageConnectionString=${{ secrets.dev.AZUREWEBJOBSSTORAGE }} \
+            --parameters AWSS3AcessKey="${{ secrets.AWSS3ACESSKEY }}" \
+            --parameters AWSS3SecretKey="${{ secrets.AWSS3SECRETKEY }}" \
+            --parameters storageConnectionString="${{ secrets.AZUREWEBJOBSSTORAGE }}"
             --parameters ./bicep/modules/parameters/${{ github.event.inputs.environment }}parameter.json
             # --parameters functionAppName=${{ env.functionAppName }} \
             # --parameters location=${{ env.location }} \
