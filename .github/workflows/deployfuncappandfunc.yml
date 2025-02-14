@@ -18,21 +18,8 @@ on:
           - prod
 
 env: 
-  resourceGroupName: $(jq -r ".resourceGroupName" ./bicep/modules/parameters/${{ github.event.inputs.environment }}parameter.json)
-  functionAppName: $(jq -r ".functionAppName" ./bicep/modules/parameters/${{ github.event.inputs.environment }}parameter.json)
-  location: $(jq -r ".location" ./bicep/modules/parameters/${{ github.event.inputs.environment }}parameter.json)
-  storageAccountName: $(jq -r ".storageAccountName" ./bicep/modules/parameters/${{ github.event.inputs.environment }}parameter.json)
-  appServicePlanName: $(jq -r ".appServicePlanName" ./bicep/modules/parameters/${{ github.event.inputs.environment }}parameter.json)
-  applicationInsightsName: $(jq -r ".applicationInsightsName" ./bicep/modules/parameters/${{ github.event.inputs.environment }}parameter.json)
-  logAnalyticsWorkspaceName: $(jq -r ".logAnalyticsWorkspaceName" ./bicep/modules/parameters/${{ github.event.inputs.environment }}parameter.json)
-  appInsightsInstrumentationKey : $(jq -r ".APPINSIGHTS_INSTRUMENTATIONKEY" ./bicep/modules/parameters/${{ github.event.inputs.environment }}parameter.json)
-  functionsExtensionVersion :  $(jq -r ".functionsExtensionVersion" ./bicep/modules/parameters/${{ github.event.inputs.environment }}parameter.json)
-  functionsWorkerRuntime :  $(jq -r ".functionsWorkerRuntime" ./bicep/modules/parameters/${{ github.event.inputs.environment }}parameter.json)
-  serviceBusQueueTriggerDisabled :  $(jq -r ".AzureWebJobs.ServiceBusQueueTrigger1.Disabled" ./bicep/modules/parameters/${{ github.event.inputs.environment }}parameter.json)
-  websiteRunFromPackage :  $(jq -r ".websiteRunFromPackage" ./bicep/modules/parameters/${{ github.event.inputs.environment }}parameter.json)
-  websiteVnetRouteAll :  $(jq -r ".websiteVnetRouteAll" ./bicep/modules/parameters/${{ github.event.inputs.environment }}parameter.json)
-  keyVaultName: $(jq -r ".keyVaultName" ./bicep/parameters/${{ inputs.environment }}Parameters.json)
-  
+  resourceGroupName: $(jq -r ".resourceGroupName" ./bicep/modules/parameters/${{ github.event.inputs.environment }}parameter.json) 
+  ENVIRONMENT: ${{ github.event.inputs.environment }}
 
 jobs:
   build:
@@ -97,6 +84,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     needs: build
+    environment: ${{ env.ENVIRONMENT }}
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
