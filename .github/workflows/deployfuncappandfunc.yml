@@ -126,13 +126,26 @@ jobs:
  
     - name: Deploy Azure infrastructure with Bicep
       run: |
+        mergedParams=$(jq \
+          --arg AWSS3AcessKey "${{ secrets.AWSS3ACESSKEY }}" \
+          --arg AWSS3SecretKey "${{ secrets.AWSS3SECRETKEY }}" \
+          --arg storageConnectionString "${{ secrets.AZUREWEBJOBSSTORAGE }}" \
+          '. + {
+            "AWSS3AcessKey": $AWSS3AcessKey,
+            "AWSS3SecretKey": $AWSS3SecretKey,
+            "storageConnectionString": $storageConnectionString
+          }' ./bicep/modules/parameters/${{ github.event.inputs.environment }}parameter.json)
+
+        echo "$mergedParams" > mergedParamters.json
+        
         az deployment group create \
             --resource-group ${{ env.resourceGroupName }} \
             --template-file ./bicep/modules/Function_APP.bicep \
-            --parameters @./bicep/modules/parameters/${{ github.event.inputs.environment }}parameter.json \
-            --parameters AWSS3AcessKey=${{ secrets.AWSS3ACESSKEY }} \
-            --parameters AWSS3SecretKey=${{ secrets.AWSS3SECRETKEY }} \
-            --parameters storageConnectionString=${{ secrets.AZUREWEBJOBSSTORAGE }}
+            --parameters @mergedParamters.json
+            # --parameters @./bicep/modules/parameters/${{ github.event.inputs.environment }}parameter.json \
+            # --parameters AWSS3AcessKey=${{ secrets.AWSS3ACESSKEY }} \
+            # --parameters AWSS3SecretKey=${{ secrets.AWSS3SECRETKEY }} \
+            # --parameters storageConnectionString=${{ secrets.AZUREWEBJOBSSTORAGE }}
             # --parameters functionAppName=${{ env.functionAppName }} \
             # --parameters location=${{ env.location }} \
             # --parameters appServicePlanName=${{ env.appServicePlanName }} \
