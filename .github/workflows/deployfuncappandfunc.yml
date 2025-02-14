@@ -18,7 +18,6 @@ on:
           - prod
 
 env: 
-  resourceGroupName: $(jq -r ".resourceGroupName" ./bicep/modules/parameters/${{ github.event.inputs.environment }}parameter.json)
   ENVIRONMENT: ${{ github.event.inputs.environment }}
 
 jobs:
@@ -34,6 +33,12 @@ jobs:
       with:
         dotnet-version: '8.x'
 
+    - name: Set environment variables
+      id: set-env
+      run: |
+          RESOURCE_GROUP_NAME=$(jq -r ".resourceGroupName" ./bicep/modules/parameters/${ENVIRONMENT}parameter.json)
+          echo "RESOURCE_GROUP_NAME=${RESOURCE_GROUP_NAME}" >> $GITHUB_ENV
+    
     - name: Set project path
       run: echo "PROJECT_PATH=src/FunctionAppHTTP.csproj" >> $GITHUB_ENV
 
@@ -142,7 +147,7 @@ jobs:
         cat mergedParameters.json
         
         az deployment group create \
-            --resource-group "${{ env.resourceGroupName }}" \
+            --resource-group "${RESOURCE_GROUP_NAME}" \
             --template-file ./bicep/modules/Function_APP.bicep \
             --parameters @mergedParameters.json      
 
