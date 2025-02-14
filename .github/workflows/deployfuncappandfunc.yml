@@ -127,6 +127,10 @@ jobs:
 
     - name: Install Bicep
       run: az bicep install
+
+    - name: check secrets
+      run: |
+          echo "stog ${{ secrets.AZUREWEBJOBSSTORAGE }}"
  
     - name: Deploy Azure infrastructure with Bicep
       run: |
