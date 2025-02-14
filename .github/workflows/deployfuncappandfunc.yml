@@ -128,12 +128,12 @@ jobs:
       run: |
         fileContent=$(cat ./bicep/modules/parameters/${{ github.event.inputs.environment }}parameter.json)
 
-        echo "
+        echo '
         {
           AWSS3AcessKey "${{ secrets.AWSS3ACESSKEY }}",
           AWSS3SecretKey "${{ secrets.AWSS3SECRETKEY }}",
           storageConnectionString "${{ secrets.AZUREWEBJOBSSTORAGE }}"
-        } > inlineParams.json
+        }' > inlineParams.json
 
         combineParams=$(jq -s '[0] * [1]' ./bicep/modules/parameters/${{ github.event.inputs.environment }}parameter.json inlineParams.json)
 
