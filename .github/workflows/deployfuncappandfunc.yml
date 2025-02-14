@@ -84,7 +84,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     needs: build
-    environment: ${{ env.ENVIRONMENT }}
+    environment: ${{ github.event.inputs.environment }}
     
     steps:
     - name: Checkout repository
