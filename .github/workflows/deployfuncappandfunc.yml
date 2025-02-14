@@ -127,13 +127,19 @@ jobs:
     - name: Deploy Azure infrastructure with Bicep
       run: |
         fileContent=$(cat ./bicep/modules/parameters/${{ github.event.inputs.environment }}parameter.json)
-        
-        mergedParams=$(echo "$fileContent" | jq --arg AWSS3AcessKey "${{ secrets.AWSS3ACESSKEY }}" \
-          --arg AWSS3SecretKey "${{ secrets.AWSS3SECRETKEY }}" \
-          --arg storageConnectionString "${{ secrets.AZUREWEBJOBSSTORAGE }}" \
-          '.+{ "AWSS3AcessKey": $AWSS3AcessKey, "AWSS3SecretKey": $AWSS3SecretKey, "storageConnectionString": $storageConnectionString }')
 
-        echo "$mergedParams" > mergedParamters.json
+        echo "
+        {
+          AWSS3AcessKey "${{ secrets.AWSS3ACESSKEY }}",
+          AWSS3SecretKey "${{ secrets.AWSS3SECRETKEY }}",
+          storageConnectionString "${{ secrets.AZUREWEBJOBSSTORAGE }}"
+        } > inlineParams.json
+
+        combineParams=$(jq -s '[0] * [1]' ./bicep/modules/parameters/${{ github.event.inputs.environment }}parameter.json inlineParams.json)
+          
+        # mergedParams=$(echo "$fileContent" | jq --arg AWSS3AcessKey "${{ secrets.AWSS3ACESSKEY }}" --arg AWSS3SecretKey "${{ secrets.AWSS3SECRETKEY }}" --arg storageConnectionString "${{ secrets.AZUREWEBJOBSSTORAGE }}" '.+{ "AWSS3AcessKey": $AWSS3AcessKey, "AWSS3SecretKey": $AWSS3SecretKey, "storageConnectionString": $storageConnectionString }')
+
+        echo "$combineParams" > mergedParamters.json
 
         cat mergedParamters.json
         
