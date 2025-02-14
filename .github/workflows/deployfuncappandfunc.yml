@@ -19,7 +19,7 @@ on:
 
 env: 
   resourceGroupName: $(jq -r ".resourceGroupName" ./bicep/modules/parameters/${{ github.event.inputs.environment }}parameter.json)
-  functionAppName: ${{ fromJson($(jq -r ".functionAppName" ./bicep/modules/parameters/${{ github.event.inputs.environment }}parameter.json)).value }}
+  functionAppName: ${{ fromJson((jq -r ".functionAppName" ./bicep/modules/parameters/${{ github.event.inputs.environment }}parameter.json)).value }}
   location: $(jq -r '.location' ./bicep/modules/parameters/${{ github.event.inputs.environment }}parameter.json)
   storageAccountName: $(jq -r ".storageAccountName" ./bicep/modules/parameters/${{ github.event.inputs.environment }}parameter.json)
   appServicePlanName: $(jq -r ".appServicePlanName" ./bicep/modules/parameters/${{ github.event.inputs.environment }}parameter.json)
