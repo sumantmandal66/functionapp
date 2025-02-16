@@ -147,16 +147,22 @@ jobs:
           "storageConnectionString": "${{ secrets.AZUREWEBJOBSSTORAGE }}"
         }' > inlineParams.json
     
-        combineParams=$(jq -s '.[0] * .[1]' ./bicep/modules/parameters/${{ github.event.inputs.environment }}parameter.json inlineParams.json)
+        - name: ssd
+          run: echo inlineParams.json
+
+        - name: file
+          run: echo fileContent
+
+        #combineParams=$(jq -s '.[0] * .[1]' ./bicep/modules/parameters/${{ github.event.inputs.environment }}parameter.json inlineParams.json)
     
-        echo "$combineParams" > mergedParameters.json
+        # echo "$combineParams" > mergedParameters.json
     
-        cat mergedParameters.json
+        # cat mergedParameters.json
         
-        az deployment group create \
-            --resource-group "${{ needs.build.outputs.resource_group_name }}" \
-            --template-file ./bicep/modules/Function_APP.bicep \
-            --parameters @mergedParameters.json      
+        # az deployment group create \
+        #     --resource-group "${{ needs.build.outputs.resource_group_name }}" \
+        #     --template-file ./bicep/modules/Function_APP.bicep \
+        #     --parameters @mergedParameters.json      
 
     - name: Download artifact
       uses: actions/download-artifact@v4
