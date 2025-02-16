@@ -19,6 +19,8 @@ on:
 
 env: 
   ENVIRONMENT: ${{ github.event.inputs.environment }}
+  RESOURCE_GROUP_NAME: $(jq -r ".resourceGroupName" ./bicep/modules/parameters/${{ github.event.inputs.environment }}parameter.json)
+
 
 jobs:
   build:
@@ -33,18 +35,18 @@ jobs:
       with:
         dotnet-version: '8.x'
 
-    - name: Set environment variables
-      id: set-env
-      run: |
-          RESOURCE_GROUP_NAME=$(jq -r ".resourceGroupName" ./bicep/modules/parameters/${ENVIRONMENT}parameter.json)
-          echo "RESOURCE_GROUP_NAME=${RESOURCE_GROUP_NAME}" >> $GITHUB_ENV
-          echo "resource_group_name=${RESOURCE_GROUP_NAME}" >> $GITHUB_OUTPUT
-          echo "ENVIRONMENT=${ENVIRONMENT}" >> $GITHUB_ENV
+    # - name: Set environment variables
+    #   id: set-env
+    #   run: |
+    #       RESOURCE_GROUP_NAME=$(jq -r ".resourceGroupName" ./bicep/modules/parameters/${ENVIRONMENT}parameter.json)
+    #       echo "RESOURCE_GROUP_NAME=${RESOURCE_GROUP_NAME}" >> $GITHUB_ENV
+    #       echo "resource_group_name=${RESOURCE_GROUP_NAME}" >> $GITHUB_OUTPUT
+    #       echo "ENVIRONMENT=${ENVIRONMENT}" >> $GITHUB_ENV
 
-    - name: Print environment variables
-      run: |
-          echo "Environment: ${ENVIRONMENT}"
-          echo "Resource Group Name: ${RESOURCE_GROUP_NAME}"
+    # - name: Print environment variables
+    #   run: |
+    #       echo "Environment: ${ENVIRONMENT}"
+    #       echo "Resource Group Name: ${RESOURCE_GROUP_NAME}"
     
     - name: Set project path
       run: echo "PROJECT_PATH=src/FunctionAppHTTP.csproj" >> $GITHUB_ENV
@@ -145,7 +147,7 @@ jobs:
           "AWSS3AcessKey": "${{ secrets.AWSS3ACESSKEY }}",
           "AWSS3SecretKey": "${{ secrets.AWSS3SECRETKEY }}",
           "storageConnectionString": "${{ secrets.AZUREWEBJOBSSTORAGE }}"
-        }' > inlineParams.json
+        }' >> inlineParams.json
     
         - name: ssd
           run: echo inlineParams.json
