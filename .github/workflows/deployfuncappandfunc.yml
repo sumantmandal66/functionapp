@@ -166,6 +166,7 @@ jobs:
     #     echo "$fileContent"
 
     - name: Print inlineParams.json
+      run: |
         combineParams=$(jq -s '.[0] * .[1]' ./bicep/modules/parameters/${{ github.event.inputs.environment }}parameter.json inlineParams.json)
     
         # echo "$combineParams" > mergedParameters.json
