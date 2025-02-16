@@ -149,11 +149,11 @@ jobs:
           "storageConnectionString": "${{ secrets.AZUREWEBJOBSSTORAGE }}"
         }' >> inlineParams.json
     
-        - name: ssd
-          run: echo inlineParams.json
+    - name: ssd
+      run: echo inlineParams.json
 
-        - name: file
-          run: echo fileContent
+    - name: file
+      run: echo fileContent
 
         #combineParams=$(jq -s '.[0] * .[1]' ./bicep/modules/parameters/${{ github.event.inputs.environment }}parameter.json inlineParams.json)
     
