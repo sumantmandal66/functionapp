@@ -20,6 +20,7 @@ on:
 env: 
   ENVIRONMENT: ${{ github.event.inputs.environment }}
   RESOURCE_GROUP_NAME: $(jq -r ".resourceGroupName" ./bicep/modules/parameters/${{ github.event.inputs.environment }}parameter.json)
+  functionAppName: $(jq -r ".functionAppName" ./bicep/modules/parameters/${{ github.event.inputs.environment }}parameter.json)
 
 
 jobs:
@@ -34,7 +35,11 @@ jobs:
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: '8.x'
-
+        
+    -name: echo env params
+     run:|
+       echo "RESOURCE_GROUP_NAME :${{ RESOURCE_GROUP_NAME }}"
+       echo "functionAppName :${{ functionAppName }}"
     # - name: Set environment variables
     #   id: set-env
     #   run: |
