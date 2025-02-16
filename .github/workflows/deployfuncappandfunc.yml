@@ -149,15 +149,21 @@ jobs:
           "storageConnectionString": "${{ secrets.AZUREWEBJOBSSTORAGE }}"
         }' >> inlineParams.json
     
+    - name: Set file content
+      run: |
+        fileContent=$(cat ./bicep/modules/parameters/${{ github.event.inputs.environment }}parameter.json)
+        echo "Contents of fileContent:"
+        echo "$fileContent"  # This will print the contents of the file
+
     - name: Print inlineParams.json
       run: |
         echo "Contents of inlineParams.json:"
         cat inlineParams.json
   
-    - name: Print fileContent
-      run: |
-        echo "Contents of fileContent:"
-        echo "$fileContent"
+    # - name: Print fileContent
+    #   run: |
+    #     echo "Contents of fileContent:"
+    #     echo "$fileContent"
 
         #combineParams=$(jq -s '.[0] * .[1]' ./bicep/modules/parameters/${{ github.event.inputs.environment }}parameter.json inlineParams.json)
     
